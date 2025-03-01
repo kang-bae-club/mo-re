@@ -1,38 +1,59 @@
 package com.kangbaeclub.more.filter;
 
-import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Jwts;
 
 @Component
 public class JWTUtil {
     private SecretKey secretKey;
 
     public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
-        this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+        this.secretKey =
+                new SecretKeySpec(
+                        secret.getBytes(StandardCharsets.UTF_8),
+                        Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
     public String getUsernameFromToken(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("username", String.class);
     }
 
     public String getRoleFromToken(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role", String.class);
     }
 
     public Boolean isTokenExpired(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration()
+                .before(new Date());
     }
 
     public String createJwt(String category, String username, String role, Long exp) {
         return Jwts.builder()
                 .claim("category", category)
-                .claim("username",  username)
+                .claim("username", username)
                 .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + exp))

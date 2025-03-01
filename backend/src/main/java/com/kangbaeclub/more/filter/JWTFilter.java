@@ -1,25 +1,30 @@
 package com.kangbaeclub.more.filter;
 
-import com.kangbaeclub.more.member.entity.Member;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import com.kangbaeclub.more.member.entity.Member;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String accessToken = resolveToken(request.getHeader("Authorization"));
 
-        if(accessToken == null) {
+        if (accessToken == null) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -40,7 +45,7 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     private String resolveToken(String header) {
-        if(header != null && header.startsWith("Bearer ")) {
+        if (header != null && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
         return null;

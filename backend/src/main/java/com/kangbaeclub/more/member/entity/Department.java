@@ -1,7 +1,7 @@
 package com.kangbaeclub.more.member.entity;
 
-import com.kangbaeclub.more.organization.entity.Organization;
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Department {
-    @EmbeddedId
-    private DepartmentId id;
+    @EmbeddedId private DepartmentId id;
     private String deptName;
 }

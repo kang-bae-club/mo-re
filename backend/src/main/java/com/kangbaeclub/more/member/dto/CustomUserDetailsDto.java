@@ -1,13 +1,14 @@
 package com.kangbaeclub.more.member.dto;
 
-import com.kangbaeclub.more.member.entity.Member;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.kangbaeclub.more.member.entity.Member;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class CustomUserDetailsDto implements UserDetails {
@@ -16,12 +17,13 @@ public class CustomUserDetailsDto implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return String.valueOf(member.getRole());
-            }
-        });
+        authorities.add(
+                new GrantedAuthority() {
+                    @Override
+                    public String getAuthority() {
+                        return String.valueOf(member.getRole());
+                    }
+                });
         return authorities;
     }
 

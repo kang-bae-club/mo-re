@@ -1,20 +1,19 @@
 package com.kangbaeclub.more.member.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.management.relation.Role;
-import java.util.Date;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
-    @EmbeddedId
-    private MemberId id;
+    @EmbeddedId private MemberId id;
     private String password;
     private String name;
     private String phone;
