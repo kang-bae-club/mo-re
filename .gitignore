@@ -134,6 +134,7 @@ backend/**/application-*.yml
 /**/.gradle
 **/build/
 !/**/src/**/build/
+!**/build/reports
 
 # Ignore Gradle GUI config
 /**/gradle-app.setting
