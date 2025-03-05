@@ -48,12 +48,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             HttpServletRequest request, HttpServletResponse response) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
+            // 1. 로그인 정보 가져오기
             LoginRequestDto loginRequestDto =
                     objectMapper.readValue(request.getInputStream(), LoginRequestDto.class);
-            String username = loginRequestDto.getUsername();
+            String username = loginRequestDto.getUsername(); // 회원 아이디
             String password = loginRequestDto.getPassword();
+            // 2. 아이디와 비밀번호를 기반으로 인증 토큰 생성
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(username, password, null);
+            // 3. 전달된 인증 토큰을 사용하여 사용자를 인증
             return authenticationManager.authenticate(authToken);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -69,30 +72,35 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             FilterChain chain,
             Authentication authentication)
             throws IOException {
+       /*
+            authentication : 인증된 사용자 정보를 포함
+            authentication 객체를 이용해서 username과 role 정보를 가져옴
+       */
         String username = authentication.getName();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        // 토큰 생성
+        // 1. access 및 refresh 토큰 생성
         String access = jwtUtil.createJwt("access", username, role, 3600000L);
         String refresh = jwtUtil.createJwt("refresh", username, role, 8640000L);
 
-        // refresh 토큰 저장
+        // 2. refresh 토큰 저장
         addRefreshEntity(username, refresh, 8640000L);
 
-        // 응답 설정
+        // 3. 응답 설정
         response.setContentType("application/json");
-        // 1. body - access token 저장
+        // 3-1. body - access token 저장
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         loginResponseDto.setToken(access);
         response.getWriter().write(objectMapper.writeValueAsString(loginResponseDto));
-        // 2. cookie - refresh token 저장
+        // 3-2. cookie - refresh token 저장
         response.addCookie(createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
     }
 
+    // TODO: refresh 토큰은 redis에 저장
     private void addRefreshEntity(String username, String refresh, long expireTime) {
         Date date = new Date(System.currentTimeMillis() + expireTime);
         Refresh refreshEntity = new Refresh();

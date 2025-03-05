@@ -42,6 +42,8 @@ public class JWTFilter extends OncePerRequestFilter {
         String role = jwtUtil.getRoleFromToken(accessToken);
         Member member = new Member();
         member.createMember(username, role);
+        
+        // Todo: jwt 인증 코드 작성
     }
 
     private String resolveToken(String header) {
