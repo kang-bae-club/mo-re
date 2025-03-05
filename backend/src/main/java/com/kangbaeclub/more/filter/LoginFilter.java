@@ -72,10 +72,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             FilterChain chain,
             Authentication authentication)
             throws IOException {
-       /*
-            authentication : 인증된 사용자 정보를 포함
-            authentication 객체를 이용해서 username과 role 정보를 가져옴
-       */
+        /*
+             authentication : 인증된 사용자 정보를 포함
+             authentication 객체를 이용해서 username과 role 정보를 가져옴
+        */
         String username = authentication.getName();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
