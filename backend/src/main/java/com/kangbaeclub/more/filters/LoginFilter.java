@@ -1,4 +1,4 @@
-package com.kangbaeclub.more.filter;
+package com.kangbaeclub.more.filters;
 
 import java.io.IOException;
 import java.util.Collection;

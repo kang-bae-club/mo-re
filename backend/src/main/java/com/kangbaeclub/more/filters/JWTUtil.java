@@ -1,4 +1,4 @@
-package com.kangbaeclub.more.filter;
+package com.kangbaeclub.more.filters;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;

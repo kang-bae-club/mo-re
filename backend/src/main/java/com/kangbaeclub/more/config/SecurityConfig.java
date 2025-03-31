@@ -19,9 +19,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import com.kangbaeclub.more.filter.JWTFilter;
-import com.kangbaeclub.more.filter.JWTUtil;
-import com.kangbaeclub.more.filter.LoginFilter;
+import com.kangbaeclub.more.filters.JWTFilter;
+import com.kangbaeclub.more.filters.JWTUtil;
+import com.kangbaeclub.more.filters.LoginFilter;
 import com.kangbaeclub.more.member.repository.RefreshRepository;
 
 import lombok.RequiredArgsConstructor;
