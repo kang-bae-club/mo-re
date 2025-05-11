@@ -3,7 +3,6 @@ package com.kangbaeclub.more.config;
 import java.util.Collections;
 import java.util.List;
 
-import com.kangbaeclub.more.filters.CustomLogoutFilter;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.Bean;
@@ -21,6 +20,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import com.kangbaeclub.more.filters.CustomLogoutFilter;
 import com.kangbaeclub.more.filters.JWTFilter;
 import com.kangbaeclub.more.filters.JWTUtil;
 import com.kangbaeclub.more.filters.LoginFilter;
@@ -74,7 +74,8 @@ public class SecurityConfig {
                                 refreshRepository),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
-                .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
+                .addFilterBefore(
+                        new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
