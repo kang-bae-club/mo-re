@@ -60,4 +60,13 @@ public class JWTUtil {
                 .signWith(secretKey)
                 .compact();
     }
+
+    public String getCategory(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token) // JWT 서명 검증 + Claims(payload) 추출
+                .getPayload()
+                .get("category", String.class);
+    }
 }
