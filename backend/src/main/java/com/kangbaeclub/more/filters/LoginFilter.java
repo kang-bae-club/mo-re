@@ -96,7 +96,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         loginResponseDto.setToken(access);
         response.getWriter().write(objectMapper.writeValueAsString(loginResponseDto));
         // 3-2. cookie - refresh token 저장
-        response.addCookie(createCookie("refresh", refresh));
+        Cookie cookie = new Cookie("refresh", refresh);
+        cookie.setPath("/"); // 모든 경로에서 쿠키가 유효하도록 경로 설정
+        cookie.setHttpOnly(true); // JS로 못 건드리게 함
+        response.addCookie(cookie);
         response.setStatus(HttpStatus.OK.value());
     }
 
