@@ -86,9 +86,10 @@ backend/**/*.rar
 /**/*.icloud
 
 ### spring ###
-backend/**/application-*.yml
-!backend/**/application-template.yml
-!backend/**/application-local.yml
+backend/src/**/application-*.yml
+!backend/src/**/application-template.yml
+!backend/src/**/application-local.yml
+!backend/src/**/application-test.yml
 
 ### react ###
 /**/.DS_*
