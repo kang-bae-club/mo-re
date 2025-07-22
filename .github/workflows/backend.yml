@@ -25,6 +25,13 @@ jobs:
         with:
           java-version: 17
           distribution: "zulu" # Alternative distribution options are available
+      - name: Shutdown Ubuntu MariaDB
+        run: sudo service mysql stop
+      - name: Set up MariaDB
+        uses: getong/mariadb-action@v1.11
+        with:
+           mysql database: more
+           mysql root password: 1234
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
