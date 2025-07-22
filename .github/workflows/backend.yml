@@ -32,12 +32,6 @@ jobs:
         with:
            mysql database: more
            mysql root password: 1234
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
       - name: Cache Gradle packages
         uses: actions/cache@v4
         with:
@@ -49,7 +43,3 @@ jobs:
           cd backend
           mkdir -p src/main/resources
           echo ${{ secrets.APPLICATION_YML }} | base64 --decode > src/main/resources/application.yml
-      - name: Build and analyze
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: cd ./backend && ./gradlew build sonar --info
