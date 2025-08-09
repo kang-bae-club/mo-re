@@ -6,12 +6,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.kangbaeclub.more.meeting.repository.RoomRepository;
 import com.kangbaeclub.more.organization.entity.Organization;
 import com.kangbaeclub.more.organization.repository.OrganizationRepository;
 
 @DataJpaTest
+@ActiveProfiles("test")
 public class RoomEntityTest {
 
     @Autowired private RoomRepository roomRepository;
