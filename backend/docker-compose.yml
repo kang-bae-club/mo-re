@@ -1,14 +1,60 @@
 services:
-  mariadb:
-    image: 'mariadb:latest'
+  app:
+    build: .
+    container_name: springBootApp
+    ports:
+      - "8081:8080"
     environment:
-      - 'MARIADB_DATABASE='
-      - 'MARIADB_PASSWORD='
-      - 'MARIADB_ROOT_PASSWORD='
-      - 'MARIADB_USER='
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: "${DB_USER}"
+      SPRING_DATASOURCE_PASSWORD: "${DB_PASSWORD}"
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: "${REDIS_PASSWORD}"
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks: [appnet]
+  mariadb:
+    image: mariadb:11
     ports:
-      - '3306'
+      - "3306:3306"
+    environment:
+      MARIADB_DATABASE: "${DB_NAME}"
+      MARIADB_PASSWORD: "${DB_PASSWORD}"
+      MARIADB_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MARIADB_USER: "${DB_USER}"
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uroot -p$DB_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks: [appnet]
   redis:
-    image: 'redis:latest'
+    image: redis:7-alpine
     ports:
-      - '6379'
+      - "6379:6379"
+    command: sh -c "exec redis-server --requirepass \"$REDIS_PASSWORD\" --appendonly yes"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $REDIS_PASSWORD ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks: [appnet]
+
+volumes:
+  mariadb_data: {}
+  redis_data: {}
+
+networks:
+  appnet: {}
