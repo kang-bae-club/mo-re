@@ -3,7 +3,6 @@ package com.kangbaeclub.more.meeting.entity;
 import java.io.Serializable;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -19,5 +18,5 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class RoomCharacteristicsId implements Serializable {
     private String uuid;
-    @Embedded private RoomId roomId;
+    private RoomId roomId;
 }

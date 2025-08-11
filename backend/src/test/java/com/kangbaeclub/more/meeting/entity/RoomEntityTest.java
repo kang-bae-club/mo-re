@@ -24,10 +24,11 @@ public class RoomEntityTest {
 
     @BeforeEach
     void setUp() {
-        organizationRepository.deleteAll();
-        roomRepository.deleteAll();
-
-        Organization organization = new Organization(0, "Test Org", "url");
+        Organization organization =
+                Organization.builder()
+                        .organizationName("test org")
+                        .organizationPictureUrl("url")
+                        .build();
         savedOrganization = organizationRepository.save(organization);
 
         RoomId roomId1 = new RoomId(savedOrganization.getOrganizationId(), "room1");
@@ -50,7 +51,7 @@ public class RoomEntityTest {
         assertThat(foundRoom.getRoomId().getOrganizationId())
                 .isEqualTo(savedOrganization.getOrganizationId());
         assertThat(foundRoom.getRoomId().getName()).isEqualTo("Test Room");
-        assertThat(foundRoom.getOrganization().getOrganizationName()).isEqualTo("Test Org");
+        assertThat(foundRoom.getOrganization().getOrganizationName()).isEqualTo("test org");
         assertThat(foundRoom.getCapacity()).isEqualTo(10);
     }
 }

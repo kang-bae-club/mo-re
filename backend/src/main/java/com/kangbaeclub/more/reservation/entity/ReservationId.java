@@ -1,8 +1,10 @@
-package com.kangbaeclub.more.meeting.entity;
+package com.kangbaeclub.more.reservation.entity;
 
 import java.io.Serializable;
 
 import jakarta.persistence.Embeddable;
+
+import com.kangbaeclub.more.meeting.entity.RoomId;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,11 +16,11 @@ import lombok.Setter;
 @Embeddable
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-public class RoomId implements Serializable {
-    private Long organizationId;
-    private String name;
+public class ReservationId implements Serializable {
+    private String uuid;
+    private RoomId roomId;
 }

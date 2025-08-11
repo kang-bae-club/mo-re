@@ -5,13 +5,17 @@ import java.util.Date;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Builder
 public class Member {
     @EmbeddedId private MemberId id;
     private String password;
@@ -24,6 +28,10 @@ public class Member {
     private Date joinedDate;
     private String username;
     private String role;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("departmentId")
+    private Department department;
 
     public void createMember(String username, String role) {
         this.username = username;

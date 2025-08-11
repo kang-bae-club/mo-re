@@ -5,6 +5,7 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class MemberId implements Serializable {
-    private int memberId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Department department;
+    private String memberId;
+    private DepartmentId departmentId;
 }
