@@ -11,7 +11,7 @@ services:
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
       SPRING_DATA_REDIS_PASSWORD: "${REDIS_PASSWORD}"
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: "${DDL_AUTO}"
     depends_on:
       mariadb:
         condition: service_healthy
