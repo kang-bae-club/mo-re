@@ -17,11 +17,18 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Department {
-    @EmbeddedId private DepartmentId departmentId;
+    @EmbeddedId
+    @AttributeOverrides({
+        @AttributeOverride(name = "deptId", column = @Column(name = "dept_id")),
+        @AttributeOverride(name = "organizationId", column = @Column(name = "organization_id"))
+    })
+    private DepartmentId departmentId;
+
     private String deptName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("organizationId")
+    @JoinColumn(name = "organization_id", referencedColumnName = "organizationId")
     // organization.id -> this.id.organizationId로 단방향 자동 매핑
     private Organization organization;
 }

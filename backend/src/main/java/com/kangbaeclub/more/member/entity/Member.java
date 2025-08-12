@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Builder
+@EqualsAndHashCode
 public class Member {
     @EmbeddedId private MemberId id;
     private String password;
@@ -31,6 +33,10 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("departmentId")
+    @JoinColumns({
+        @JoinColumn(name = "deptId", referencedColumnName = "dept_id"),
+        @JoinColumn(name = "organizationId", referencedColumnName = "organization_id")
+    })
     private Department department;
 
     public void createMember(String username, String role) {
