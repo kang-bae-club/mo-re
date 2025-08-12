@@ -41,7 +41,7 @@ public class RoomCharacteristicsEntityTest {
                         "uuid1",
                         new RoomId(
                                 savedOrganization.getOrganizationId(),
-                                savedOrganization.getOrganizationName()));
+                                "test room"));
 
         RoomCharacteristics characteristics =
                 new RoomCharacteristics(roomCharacteristicsId, "test description");
