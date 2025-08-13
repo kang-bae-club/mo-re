@@ -1,4 +1,4 @@
-package com.kangbaeclub.more.member.entity;
+package com.kangbaeclub.more.meeting.entity;
 
 import java.io.Serializable;
 
@@ -6,15 +6,19 @@ import jakarta.persistence.Embeddable;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Embeddable
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@EqualsAndHashCode
 @Builder
-public class DepartmentId implements Serializable {
-    private Long deptId;
+public class RoomId implements Serializable {
     private Long organizationId;
+    private String name;
 }
