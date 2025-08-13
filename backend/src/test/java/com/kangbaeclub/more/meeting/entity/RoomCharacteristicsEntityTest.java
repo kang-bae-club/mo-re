@@ -38,10 +38,7 @@ public class RoomCharacteristicsEntityTest {
         // given: 테스트할 RoomCharacteristics 객체를 생성
         RoomCharacteristicsId roomCharacteristicsId =
                 new RoomCharacteristicsId(
-                        "uuid1",
-                        new RoomId(
-                                savedOrganization.getOrganizationId(),
-                                "test room"));
+                        "uuid1", new RoomId(savedOrganization.getOrganizationId(), "test room"));
 
         RoomCharacteristics characteristics =
                 new RoomCharacteristics(roomCharacteristicsId, "test description");
