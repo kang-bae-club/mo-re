@@ -12,6 +12,7 @@ import com.kangbaeclub.more.member.repository.DepartmentRepository;
 import com.kangbaeclub.more.member.repository.MemberRepository;
 import com.kangbaeclub.more.organization.entity.Organization;
 import com.kangbaeclub.more.organization.repository.OrganizationRepository;
+import com.kangbaeclub.more.common.TestFixtureFactory;
 
 @DataJpaTest
 public class MemberEntityTest {
@@ -27,36 +28,17 @@ public class MemberEntityTest {
 
     @BeforeEach
     void setup() {
-        testOrganization =
-                organizationRepository.saveAndFlush(
-                        Organization.builder()
-                                .organizationName("test org")
-                                .organizationPictureUrl("testurl")
-                                .build());
+        testOrganization = TestFixtureFactory.createOrganization("test org", "testurl");
+        testOrganization = organizationRepository.saveAndFlush(testOrganization);
 
-        DepartmentId departmentId =
-                DepartmentId.builder()
-                        .deptId(0L)
-                        .organizationId(testOrganization.getOrganizationId())
-                        .build();
-        testDepartment =
-                departmentRepository.saveAndFlush(
-                        Department.builder()
-                                .departmentId(departmentId)
-                                .organization(testOrganization)
-                                .build());
+        testDepartment = TestFixtureFactory.createDepartment(testOrganization, 0L, null);
+        testDepartment = departmentRepository.saveAndFlush(testDepartment);
     }
 
     @Test
     @DisplayName("member 엔티티 저장 및 실제 복합키 조회 테스트")
     void member_persist_and_find_with_correct_embeddedId_test() {
-        MemberId memberId =
-                MemberId.builder()
-                        .memberId("testUser")
-                        .departmentId(testDepartment.getDepartmentId())
-                        .build();
-        Member member =
-                Member.builder().id(memberId).name("testName").department(testDepartment).build();
+        Member member = TestFixtureFactory.createMember(testDepartment, "testUser", "testName", null);
         Member savedMember = memberRepository.save(member);
         assertThat(savedMember).isNotNull();
         assertThat(savedMember).isEqualTo(member);

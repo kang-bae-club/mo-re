@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import com.kangbaeclub.more.meeting.repository.RoomCharacteristicsRepository;
 import com.kangbaeclub.more.organization.entity.Organization;
 import com.kangbaeclub.more.organization.repository.OrganizationRepository;
+import com.kangbaeclub.more.common.TestFixtureFactory;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -25,12 +26,8 @@ public class RoomCharacteristicsEntityTest {
     @BeforeEach
     void setUp() {
         // 테스트에 필요한 Organization 엔티티를 미리 저장합니다.
-        Organization organization =
-                Organization.builder()
-                        .organizationName("test organization")
-                        .organizationPictureUrl("testUrl")
-                        .build();
-        savedOrganization = organizationRepository.save(organization);
+        savedOrganization = TestFixtureFactory.createOrganization("test organization", "testUrl");
+        savedOrganization = organizationRepository.save(savedOrganization);
     }
 
     @Test

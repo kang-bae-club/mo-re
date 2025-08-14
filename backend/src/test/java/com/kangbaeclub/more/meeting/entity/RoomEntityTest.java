@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import com.kangbaeclub.more.meeting.repository.RoomRepository;
 import com.kangbaeclub.more.organization.entity.Organization;
 import com.kangbaeclub.more.organization.repository.OrganizationRepository;
+import com.kangbaeclub.more.common.TestFixtureFactory;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -24,26 +25,18 @@ public class RoomEntityTest {
 
     @BeforeEach
     void setUp() {
-        Organization organization =
-                Organization.builder()
-                        .organizationName("test org")
-                        .organizationPictureUrl("url")
-                        .build();
-        savedOrganization = organizationRepository.save(organization);
-
-        RoomId roomId1 = new RoomId(savedOrganization.getOrganizationId(), "room1");
-        RoomId roomId2 = new RoomId(savedOrganization.getOrganizationId(), "room2");
+        savedOrganization = TestFixtureFactory.createOrganization("test org", "url");
+        savedOrganization = organizationRepository.save(savedOrganization);
     }
 
     @Test
     void testRoomEntityMappingAndPersistence() throws Exception {
         // given
-        RoomId roomId = new RoomId(savedOrganization.getOrganizationId(), "Test Room");
-        Room room = new Room(roomId, savedOrganization, 10);
+        Room room = TestFixtureFactory.createRoom(savedOrganization, "Test Room", 10);
 
         // when
         Room savedRoom = roomRepository.save(room);
-        Room foundRoom = roomRepository.findById(roomId).orElse(null);
+        Room foundRoom = roomRepository.findById(room.getRoomId()).orElse(null);
 
         // then
         assertThat(savedRoom).isNotNull();

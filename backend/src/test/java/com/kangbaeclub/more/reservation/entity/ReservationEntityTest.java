@@ -25,6 +25,7 @@ import com.kangbaeclub.more.member.repository.MemberRepository;
 import com.kangbaeclub.more.organization.entity.Organization;
 import com.kangbaeclub.more.organization.repository.OrganizationRepository;
 import com.kangbaeclub.more.reservation.repository.ReservationRepository;
+import com.kangbaeclub.more.common.TestFixtureFactory;
 
 @DataJpaTest
 class ReservationEntityTest {
@@ -49,42 +50,19 @@ class ReservationEntityTest {
     @BeforeEach
     void setUp() {
         // 1. setup the `organization entity`
-        testOrganization =
-                Organization.builder()
-                        .organizationName("testName")
-                        .organizationPictureUrl("testUrl")
-                        .build();
+        testOrganization = TestFixtureFactory.createOrganization("testName", "testUrl");
         testOrganization = organizationRepository.saveAndFlush(testOrganization);
 
         // 2. setup the `department entity`
-        DepartmentId departmentId = DepartmentId.builder().deptId(1L).build();
-        testDepartment =
-                Department.builder()
-                        .departmentId(departmentId)
-                        .organization(testOrganization)
-                        .deptName("test Dept")
-                        .build();
+        testDepartment = TestFixtureFactory.createDepartment(testOrganization, 1L, "test Dept");
         testDepartment = departmentRepository.saveAndFlush(testDepartment);
 
         // 3. setup the `member entity`
-        MemberId memberId =
-                MemberId.builder()
-                        .memberId("TEST_USER")
-                        .departmentId(testDepartment.getDepartmentId())
-                        .build();
-        testOrganizer =
-                Member.builder()
-                        .id(memberId)
-                        .department(testDepartment)
-                        .username("testUsername")
-                        .name("testUser")
-                        .build();
+        testOrganizer = TestFixtureFactory.createMember(testDepartment, "TEST_USER", "testUser", "testUsername");
         testOrganizer = memberRepository.saveAndFlush(testOrganizer);
 
         // 4. setup the `room entity`
-        RoomId roomId = RoomId.builder().name("testRoom").build();
-        testRoom =
-                Room.builder().roomId(roomId).organization(testOrganization).capacity(20).build();
+        testRoom = TestFixtureFactory.createRoom(testOrganization, "testRoom", 20);
         testRoom = roomRepository.saveAndFlush(testRoom);
     }
 
