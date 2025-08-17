@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.kangbaeclub.more.common.enums.DAY;
 import com.kangbaeclub.more.meeting.entity.Room;
@@ -27,6 +28,7 @@ import com.kangbaeclub.more.reservation.repository.MeetingMemberRepository;
 import com.kangbaeclub.more.reservation.repository.ReservationRepository;
 
 @DataJpaTest
+@ActiveProfiles("test")
 public class MeetingMemberEntityTest {
 
     @Autowired private MeetingMemberRepository meetingMemberRepository;
