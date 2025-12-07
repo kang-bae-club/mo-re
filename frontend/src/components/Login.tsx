@@ -17,7 +17,7 @@ function Login() {
         >
             <Card className="max-w-md border-0 shadow-none">
                 <CardHeader className="flex justify-center items-center p-0">
-                   <img src="/logo/icon_english_logo1.png" alt="logo" className="w-[200px] h-[200px]"></img>
+                    <img src="/logo/icon_eng_logo1.png" alt="logo" className="w-[200px] h-[200px]"></img>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handle_submit} className="space-y-4">
