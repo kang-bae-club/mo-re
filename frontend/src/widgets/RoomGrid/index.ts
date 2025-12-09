@@ -1,1 +1,1 @@
-export * from './ui/RoomGrid'
+export * from './ui'

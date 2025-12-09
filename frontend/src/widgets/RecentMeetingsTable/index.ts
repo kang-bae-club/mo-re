@@ -1,1 +1,1 @@
-export * from './ui/RecentMeetingsTable'
+export * from './ui'

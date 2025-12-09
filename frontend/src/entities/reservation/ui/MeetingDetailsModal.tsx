@@ -94,7 +94,7 @@ export const MeetingDetailsModal = ({ isOpen, onClose, meeting }: MeetingDetails
                             </div>
                             <span className={cn(
                                 'px-3 py-1 rounded-full text-xs font-bold',
-                                'bg-gray-100 text-gray-600'
+                                'bg-gray-100 text-gray-600',
                             )}>
                                 {formatRelativeTime(meeting.startTime)}
                             </span>

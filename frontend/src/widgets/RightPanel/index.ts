@@ -1,1 +1,1 @@
-export * from './ui/RightPanel'
+export * from './ui'

@@ -1,1 +1,1 @@
-export { DashboardHeader } from './ui/DashboardHeader'
+export * from './ui'

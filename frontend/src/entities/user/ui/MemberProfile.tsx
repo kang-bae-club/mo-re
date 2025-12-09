@@ -1,5 +1,5 @@
-import { cn } from "@/shared"
-import { Member } from "../model"
+import { cn } from '@/shared'
+import { Member } from '../model'
 
 
 
