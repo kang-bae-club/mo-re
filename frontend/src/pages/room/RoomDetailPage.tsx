@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { format } from 'date-fns'
+import { Info } from 'lucide-react'
 import { PageHeader } from '@/shared/ui'
 import { useRoomStore } from '@/entities/room'
 import { RoomInfoAccordion } from '@/entities/room/ui/RoomInfoAccordion'
@@ -9,6 +10,7 @@ import { RoomScheduleTimeline } from '@/features/schedule'
 export const RoomDetailPage = () => {
     const { roomId } = useParams()
     const { selectedRoom, roomReservations, fetchRoom, isLoading, selectedDate } = useRoomStore()
+    const [selectedTimeRange, setSelectedTimeRange] = useState<{ start: string; end: string } | null>(null)
 
     useEffect(() => {
         if (roomId) {
@@ -37,6 +39,8 @@ export const RoomDetailPage = () => {
 
                 <div className="mb-6 bg-gray-50 p-4 rounded-lg flex items-center justify-between">
                     <div className="flex gap-4 items-center">
+
+                        {/* TODO: 향후 "예약하기" 까지의 영역은 input 공통 영역으로 치환합니다. */}
                         <div className="flex flex-col">
                             <span className="text-xs font-bold text-gray-500 mb-1">날짜</span>
                             <div className="bg-gray-200 px-3 py-1.5 rounded text-sm text-gray-700 min-w-[120px] text-center">
@@ -46,13 +50,21 @@ export const RoomDetailPage = () => {
                         <div className="flex flex-col">
                             <span className="text-xs font-bold text-gray-500 mb-1">시간</span>
                             <div className="bg-gray-200 px-3 py-1.5 rounded text-sm text-gray-700 min-w-[120px] text-center">
-                                16:00 ~ 17:00
+                                {selectedTimeRange
+                                    ? `${selectedTimeRange.start} ~ ${selectedTimeRange.end}`
+                                    : '시간 선택'
+                                }
                             </div>
                         </div>
                     </div>
                     <button className="bg-slate-700 hover:bg-slate-800 text-white px-6 py-2 rounded-full text-sm font-semibold transition-colors">
                         예약 하기
                     </button>
+                </div>
+
+                <div className="flex items-center gap-1.5 mb-2 px-1 text-red-500 justify-end">
+                    <Info className="w-3.5 h-3.5" />
+                    <span className="text-xs font-medium">30분 단위의 예약만 가능합니다</span>
                 </div>
 
                 <div className="border rounded-xl p-4 bg-white shadow-sm">
@@ -65,6 +77,14 @@ export const RoomDetailPage = () => {
                     <RoomScheduleTimeline
                         reservations={roomReservations}
                         showAttendees={true}
+                        writable={true}
+                        onTimeSelect={(start, end) => {
+                            if (start && end)
+                                setSelectedTimeRange({ start, end })
+                            else
+                                setSelectedTimeRange(null)
+                        }}
+                        selectedRange={selectedTimeRange}
                     />
                 </div>
             </div>
