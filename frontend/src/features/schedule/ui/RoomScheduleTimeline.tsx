@@ -13,6 +13,7 @@ interface RoomScheduleTimelineProps {
     startTime?: string
     endTime?: string
     onMeetingClick?: (reservation: Reservation) => void
+    showAttendees?: boolean
 }
 
 export const RoomScheduleTimeline = ({
@@ -20,6 +21,7 @@ export const RoomScheduleTimeline = ({
     startTime = '07:00',
     endTime = '23:00',
     onMeetingClick,
+    showAttendees = false,
 }: RoomScheduleTimelineProps) => {
     const startMinutes = timeToMinutes(startTime)
     const endMinutes = timeToMinutes(endTime)
@@ -96,6 +98,7 @@ export const RoomScheduleTimeline = ({
                                     reservation={res}
                                     className="w-full h-full"
                                     onClick={() => onMeetingClick?.(res)}
+                                    showAttendees={showAttendees}
                                 />
                             </div>
                         )
