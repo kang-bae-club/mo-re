@@ -3,7 +3,7 @@ import { ScheduleQueryForm, RoomScheduleTimeline, RoomScheduleTimelineSkeleton }
 import { useReservationStore } from '@/entities/reservation'
 import { Reservation } from '@/entities/reservation'
 import { MeetingDetailsModal } from '@/entities/reservation'
-import { MOCK_SCHEDULE_RESPONSE } from '@/shared/api'
+import { MOCK_SCHEDULE_RESPONSE } from '@/shared/mocks'
 
 export const RightPanel = () => {
     const { isLoading, selectedDate, selectedRoomId } = useReservationStore()

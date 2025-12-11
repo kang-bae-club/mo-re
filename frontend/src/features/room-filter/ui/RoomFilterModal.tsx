@@ -1,9 +1,9 @@
 import { X } from 'lucide-react'
 import { RoomCard } from '@/entities/room'
-import { MOCK_DASHBOARD_DATA } from '@/shared/api'
 import { Room, RoomFilterType } from '@/entities/room'
 import { FILTER_CONFIG } from '@/shared/config'
 import { cn } from '@/shared/lib'
+import { MOCK_DASHBOARD_DATA } from '@/shared'
 
 interface RoomFilterModalProps {
     isOpen: boolean

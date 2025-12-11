@@ -3,8 +3,6 @@ import { Reservation } from '@/entities/reservation'
 import { TimelineMeetingCard } from '@/entities/reservation'
 
 
-
-// Helper to convert time "HH:mm" to minutes from start of day
 const timeToMinutes = (time: string) => {
     const [h, m] = time.split(':').map(Number)
     return h * 60 + m
@@ -26,7 +24,6 @@ export const RoomScheduleTimeline = ({
     const startMinutes = timeToMinutes(startTime)
     const endMinutes = timeToMinutes(endTime)
 
-    // Helper to parse ISO or HH:mm to minutes
     const getMinutes = (timeStr: string) => {
         if (timeStr.includes('T')) {
             const date = new Date(timeStr)
@@ -35,7 +32,6 @@ export const RoomScheduleTimeline = ({
         return timeToMinutes(timeStr)
     }
 
-    // Generate 30-min slots for grid background
     const timeSlots = useMemo(() => {
         const slots = []
         let current = startMinutes
@@ -57,12 +53,12 @@ export const RoomScheduleTimeline = ({
 
     return (
         <div className="relative flex flex-col w-full h-[600px] overflow-y-auto pr-2 pt-4">
-            {/* Time Slots Grid */}
+
             <div className="relative flex-1">
                 {timeSlots.map((time) => (
                     <div
                         key={time}
-                        className="flex items-start h-[60px] relative" // 30 mins = 60px
+                        className="flex items-start h-[60px] relative"
                         style={{ height: '60px' }}
                     >
                         <div className="w-[50px] text-xs text-gray-400 -mt-2 text-right pr-3">
@@ -73,19 +69,18 @@ export const RoomScheduleTimeline = ({
                     </div>
                 ))}
 
-                {/* Events Overlay */}
+
                 <div className="absolute top-0 left-[50px] right-0 bottom-0 pointer-events-none overflow-hidden">
                     {reservations.map((res) => {
                         const eventStart = getMinutes(res.startTime)
                         const eventEnd = getMinutes(res.endTime)
 
-                        // Skip if outside view range
                         if (eventEnd <= startMinutes || eventStart >= endMinutes) return null
 
                         const offsetMinutes = eventStart - startMinutes
                         const durationMinutes = eventEnd - eventStart
 
-                        const topPx = offsetMinutes * 2 // 1 min = 2px
+                        const topPx = offsetMinutes * 2
                         const heightPx = durationMinutes * 2
 
                         return (
@@ -106,7 +101,7 @@ export const RoomScheduleTimeline = ({
                         )
                     })}
 
-                    {/* Current Time Indicator */}
+
                     {isCurrentTimeVisible && (
                         <div
                             className="absolute left-0 right-0 border-t-2 border-red-400 z-20"

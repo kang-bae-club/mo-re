@@ -1,7 +1,13 @@
 import { HomePage } from './pages/home/ui/Page'
+import { MockInitializer } from './app/MockInitializer'
 
 const App = () => {
-    return <HomePage />
+    return (
+        <>
+            <MockInitializer />
+            <HomePage />
+        </>
+    )
 }
 
 export default App

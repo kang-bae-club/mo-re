@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { Reservation, ScheduleSlot } from '@/entities/reservation'
-import { RECENT_MEETINGS, UPCOMING_SCHEDULE } from '@/shared/api'
 
 interface ReservationState {
     recentMeetings: Reservation[]
@@ -10,15 +9,15 @@ interface ReservationState {
     selectedRoomId: string | null
     fetchReservations: () => Promise<void>
 
-    // New Actions
     selectDate: (date: Date) => void
     selectRoom: (roomId: string) => void
     fetchSchedules: () => Promise<void>
+    setInitialData: (reservations: Reservation[], schedules: ScheduleSlot[]) => void
 }
 
 export const useReservationStore = create<ReservationState>((set, get) => ({
-    recentMeetings: RECENT_MEETINGS,
-    upcomingSchedules: UPCOMING_SCHEDULE,
+    recentMeetings: [],
+    upcomingSchedules: [],
     isLoading: false,
     selectedDate: new Date(),
     selectedRoomId: null,
@@ -28,8 +27,6 @@ export const useReservationStore = create<ReservationState>((set, get) => ({
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 500))
         set({
-            recentMeetings: RECENT_MEETINGS,
-            upcomingSchedules: UPCOMING_SCHEDULE,
             isLoading: false,
         })
     },
@@ -49,13 +46,17 @@ export const useReservationStore = create<ReservationState>((set, get) => ({
         set({ isLoading: true })
         console.log(`Fetching schedules for Room: ${selectedRoomId} on ${selectedDate.toISOString()}`)
 
-        // Simulate API call with delay
         await new Promise((resolve) => setTimeout(resolve, 300))
 
-        // For now, return static data, but this proves the flow
         set({
-            upcomingSchedules: UPCOMING_SCHEDULE,
+            // upcomingSchedules will be updated via setInitialData or real API later
             isLoading: false,
+        })
+    },
+    setInitialData: (reservations: Reservation[], schedules: ScheduleSlot[]) => {
+        set({
+            recentMeetings: reservations,
+            upcomingSchedules: schedules,
         })
     },
 }))

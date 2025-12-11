@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { DashboardStats } from '@/shared/model'
 import { Room, ROOM_STATUS } from '@/entities/room'
-import { MOCK_ROOMS, MOCK_STATS } from '@/shared/api'
+
 
 interface RoomState {
     rooms: Room[]
@@ -12,8 +12,12 @@ interface RoomState {
 }
 
 export const useRoomStore = create<RoomState>((set, get) => ({
-    rooms: MOCK_ROOMS,
-    stats: MOCK_STATS,
+    rooms: [],
+    stats: {
+        totalRooms: 0,
+        availableRooms: 0,
+        inUseRooms: 0,
+    },
     setRooms: (rooms) => {
         set({ rooms })
         get().calculateStats()

@@ -26,14 +26,12 @@ export const ScheduleQueryForm = () => {
         selectRoom,
     } = useReservationStore()
 
-    // Initialize default room
     useEffect(() => {
         if (!selectedRoomId && rooms.length > 0) {
             selectRoom(rooms[0]?.id)
         }
     }, [rooms, selectedRoomId, selectRoom])
 
-    // Sync calendar view with selected date
     useEffect(() => {
         if (selectedDate) {
             setCurrentDate(selectedDate)
@@ -44,7 +42,7 @@ export const ScheduleQueryForm = () => {
 
     const monthStart = startOfMonth(currentDate)
     const monthEnd = endOfMonth(monthStart)
-    const startDate = startOfWeek(monthStart, { weekStartsOn: 0 }) // 0 = Sunday
+    const startDate = startOfWeek(monthStart, { weekStartsOn: 0 })
     const endDate = endOfWeek(monthEnd, { weekStartsOn: 0 })
 
     const calendarDays = eachDayOfInterval({
@@ -59,12 +57,11 @@ export const ScheduleQueryForm = () => {
 
     const getDayColor = (dayIndex: number, isCurrentMonth: boolean) => {
         if (!isCurrentMonth) return 'text-gray-300'
-        if (dayIndex === 0) return 'text-red-500' // Sunday
-        if (dayIndex === 6) return 'text-blue-500' // Saturday
+        if (dayIndex === 0) return 'text-red-500'
+        if (dayIndex === 6) return 'text-blue-500'
         return 'text-gray-600'
     }
 
-    // Header day color
     const getHeaderDayColor = (index: number) => {
         if (index === 0) return 'text-red-500'
         if (index === 6) return 'text-blue-500'
@@ -73,7 +70,7 @@ export const ScheduleQueryForm = () => {
 
     return (
         <div>
-            {/* Calendar Header */}
+
             <div className="mb-4 flex items-center justify-between px-2">
                 <div className="relative flex items-center gap-1 cursor-pointer hover:bg-gray-100 rounded px-1 transition-colors">
                     <span className="font-bold text-gray-800">
@@ -118,7 +115,7 @@ export const ScheduleQueryForm = () => {
                 </div>
             </div>
 
-            {/* Calendar Grid */}
+
             <div className="mb-6 grid grid-cols-7 gap-y-2 text-center text-xs">
                 {weekDays.map((day, idx) => (
                     <span key={day} className={cn('font-medium', getHeaderDayColor(idx))}>
@@ -137,7 +134,7 @@ export const ScheduleQueryForm = () => {
                             disabled={!isCurrentMonth}
                             className={cn(
                                 'mx-auto flex h-7 w-7 items-center justify-center rounded-full transition-colors',
-                                !isCurrentMonth && 'text-gray-200 cursor-default', // lighter for disabled
+                                !isCurrentMonth && 'text-gray-200 cursor-default',
                                 isCurrentMonth && !isSelected && 'hover:bg-gray-100',
                                 isSelected
                                     ? 'bg-black text-white font-medium'
@@ -150,7 +147,7 @@ export const ScheduleQueryForm = () => {
                 })}
             </div>
 
-            {/* Room Selector */}
+
             <div className="relative mb-6">
                 <div
                     className={cn(
