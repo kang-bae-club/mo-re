@@ -39,18 +39,24 @@ export interface MainButtonProps
     asChild?: boolean
 }
 
-const MainButton = React.forwardRef<HTMLButtonElement, MainButtonProps>(
-    ({ className, variant, size, asChild = false, ...props }, ref) => {
-        const Comp = asChild ? Slot : 'button'
-        return (
-            <Comp
-                className={cn(mainButtonVariants({ variant, size, className }))}
-                ref={ref}
-                {...props}
-            />
-        )
-    },
-)
+// 25.12.07 bsy - React19 스타일에 따라 forwardRef 제거
+const MainButton = ({ 
+    className, 
+    variant, 
+    size, 
+    asChild = false, 
+    ref,
+    ...props
+}: MainButtonProps & { ref?: React.Ref<HTMLButtonElement> }) => {
+    const Comp = asChild ? Slot : 'button'
+    return (
+        <Comp
+            className={cn(mainButtonVariants({ variant, size, className }))}
+            ref={ref}
+            {...props}
+        />
+    )
+}
 MainButton.displayName = 'MainButton'
 
 export { MainButton, mainButtonVariants }
