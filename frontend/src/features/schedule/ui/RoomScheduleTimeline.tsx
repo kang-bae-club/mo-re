@@ -13,7 +13,6 @@ interface RoomScheduleTimelineProps {
     reservations: Reservation[]
     startTime?: string
     endTime?: string
-    onMeetingClick?: (reservation: Reservation) => void
     showAttendees?: boolean
     writable?: boolean
     onTimeSelect?: (startTime: string | null, endTime: string | null) => void
@@ -25,7 +24,6 @@ export const RoomScheduleTimeline = ({
     reservations,
     startTime = '07:00',
     endTime = '23:00',
-    onMeetingClick,
     showAttendees = false,
     writable = false,
     onTimeSelect,
@@ -78,7 +76,7 @@ export const RoomScheduleTimeline = ({
         setDragEnd(minutes + 30)
     }
 
-    const handleMouseUp = (e?: MouseEvent) => {
+    const handleMouseUp = () => {
         if (!isDragging || !writable || dragStart === null || dragEnd === null) return
         setIsDragging(false)
 
@@ -112,9 +110,9 @@ export const RoomScheduleTimeline = ({
     }
 
     useEffect(() => {
-        const handleGlobalMouseUp = (e: MouseEvent) => {
+        const handleGlobalMouseUp = () => {
             if (isDragging) {
-                handleMouseUp(e)
+                handleMouseUp()
             }
         }
         window.addEventListener('mouseup', handleGlobalMouseUp)
@@ -166,8 +164,8 @@ export const RoomScheduleTimeline = ({
                             </div>
                             <div
                                 className={cn(
-                                    "flex-1 border-t border-gray-100 h-full w-full relative",
-                                    writable && "cursor-pointer hover:bg-gray-50 transition-colors"
+                                    'flex-1 border-t border-gray-100 h-full w-full relative',
+                                    writable && 'cursor-pointer hover:bg-gray-50 transition-colors',
                                 )}
                                 onMouseDown={(e) => handleMouseDown(e, minutes)}
                                 onMouseEnter={() => handleMouseEnter(minutes)}
@@ -183,10 +181,11 @@ export const RoomScheduleTimeline = ({
                     {selectionStyle && (
                         <div
                             className={cn(
-                                "absolute left-0 right-2 z-0 border-2 border-dashed rounded-lg pointer-events-none animate-pulse transition-all duration-300 ease-in-out",
+                                'absolute left-0 right-2 z-0 border-2 border-dashed rounded-lg pointer-events-none',
+                                'animate-pulse transition-all duration-300 ease-in-out',
                                 selectionStyle.isOverlapping
-                                    ? "bg-red-500/20 border-red-500" // 충돌시
-                                    : "bg-indigo-500/20 border-indigo-500" // 예약 가능한 상태
+                                    ? 'bg-red-500/20 border-red-500' // 충돌시
+                                    : 'bg-indigo-500/20 border-indigo-500', // 예약 가능한 상태
                             )}
                             style={{
                                 top: `${selectionStyle.top}px`,
@@ -219,7 +218,6 @@ export const RoomScheduleTimeline = ({
                                 <TimelineMeetingCard
                                     reservation={res}
                                     className="w-full h-full"
-                                    onClick={() => onMeetingClick?.(res)}
                                     showAttendees={showAttendees}
                                 />
                             </div>

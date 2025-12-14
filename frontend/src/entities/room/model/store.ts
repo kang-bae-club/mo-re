@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { DashboardStats } from '@/shared/model'
 import { Room, ROOM_STATUS } from '@/entities/room'
 import { Reservation } from '@/entities/reservation'
-import { roomApi } from '@/shared/api/room'
+import { roomApi } from '@/shared/api'
 
 
 interface RoomState {

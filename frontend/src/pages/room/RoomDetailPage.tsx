@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { Info } from 'lucide-react'
 import { PageHeader } from '@/shared/ui'
 import { useRoomStore } from '@/entities/room'
-import { RoomInfoAccordion } from '@/entities/room/ui/RoomInfoAccordion'
+import { RoomInfoAccordion } from '@/entities/room'
 import { RoomScheduleTimeline } from '@/features/schedule'
 
 export const RoomDetailPage = () => {

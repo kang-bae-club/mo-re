@@ -73,7 +73,6 @@ export const MeetingDetailsModal = ({ isOpen, onClose, meeting }: MeetingDetails
                     {/* Header */}
                     <div className="flex items-center justify-between bg-[#3E83A8] p-6 text-white rounded-t-2xl">
                         <h3 className="text-xl font-bold">
-                            {/* Assuming today's date for demo, normally derive from meeting.startTime */}
                             24.12.26 / {meeting.roomName}
                         </h3>
                         <button
