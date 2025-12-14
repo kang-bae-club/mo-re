@@ -5,8 +5,9 @@ export interface Reservation {
     roomName: string
     organizer: Member
     title: string
-    startTime: string // ISO or HH:mm
+    startTime: string
     endTime: string
+    meetingDate: string
 
     agenda?: string
     notification?: string

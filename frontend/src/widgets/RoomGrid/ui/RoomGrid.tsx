@@ -17,7 +17,10 @@ export const RoomGrid = ({ rooms }: RoomGridProps) => {
 
             <div className="mb-4 grid grid-cols-3 gap-6">
                 {rooms.map((room) => (
-                    <RoomCard key={room.id} room={room} />
+                    <RoomCard
+                        key={room.id}
+                        room={room}
+                    />
                 ))}
             </div>
             <div className="mb-12 flex justify-center">

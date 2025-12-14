@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { STATUS_UI_CONFIG } from '@/shared/config'
 import { Room } from '@/entities/room'
 import { cn } from '@/shared/lib'
@@ -8,11 +9,20 @@ interface RoomCardProps {
 }
 
 export const RoomCard = ({ room, onClick }: RoomCardProps) => {
+    const navigate = useNavigate()
     const config = STATUS_UI_CONFIG[room.status]
+
+    const handleClick = () => {
+        if (onClick) {
+            onClick()
+        } else {
+            navigate(`/room/${room.id}`)
+        }
+    }
 
     return (
         <div
-            onClick={onClick}
+            onClick={handleClick}
             className={cn(
                 'relative flex cursor-pointer flex-col rounded-xl border-2', // increased border width for visibility
                 'bg-white px-6 pb-6 pt-3 text-center transition-transform',
