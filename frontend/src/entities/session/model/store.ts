@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Member, Organization } from '@/entities/user'
+import { authApi } from '@/shared/api'
 
 
 interface SessionState {
@@ -8,7 +9,7 @@ interface SessionState {
     isLoading: boolean
     login: () => void
     logout: () => void
-    setSession: (user: Member, organization: Organization) => void
+    fetchSession: () => Promise<void>
 }
 
 export const useSessionStore = create<SessionState>((set) => ({
@@ -19,5 +20,17 @@ export const useSessionStore = create<SessionState>((set) => ({
         console.log('Login implemented in future')
     },
     logout: () => set({ user: null }),
-    setSession: (user, organization) => set({ user, organization }),
+    fetchSession: async () => {
+        set({ isLoading: true })
+        try {
+            const session = await authApi.getUserSession()
+            if (session) {
+                set({ user: session.user, organization: session.organization })
+            }
+        } catch (error) {
+            console.error('Failed to fetch session:', error)
+        } finally {
+            set({ isLoading: false })
+        }
+    },
 }))

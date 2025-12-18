@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Reservation, ScheduleSlot } from '@/entities/reservation'
+import { reservationApi } from '@/shared/api'
 
 interface ReservationState {
     recentMeetings: Reservation[]
@@ -7,12 +8,12 @@ interface ReservationState {
     isLoading: boolean
     selectedDate: Date
     selectedRoomId: string | null
-    fetchReservations: () => Promise<void>
 
+    // 아래는 fetch 로직을 래핑한 액션들
+    fetchRecentMeetings: () => Promise<void>
     selectDate: (date: Date) => void
     selectRoom: (roomId: string) => void
     fetchSchedules: () => Promise<void>
-    setInitialData: (reservations: Reservation[], schedules: ScheduleSlot[]) => void
 }
 
 export const useReservationStore = create<ReservationState>((set, get) => ({
@@ -22,13 +23,16 @@ export const useReservationStore = create<ReservationState>((set, get) => ({
     selectedDate: new Date(),
     selectedRoomId: null,
 
-    fetchReservations: async () => {
+    fetchRecentMeetings: async () => {
         set({ isLoading: true })
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 500))
-        set({
-            isLoading: false,
-        })
+        try {
+            const meetings = await reservationApi.getRecentMeetings()
+            set({ recentMeetings: meetings })
+        } catch (error) {
+            console.error('Failed to fetch recent meetings:', error)
+        } finally {
+            set({ isLoading: false })
+        }
     },
 
     selectDate: (date: Date) => {
@@ -44,19 +48,14 @@ export const useReservationStore = create<ReservationState>((set, get) => ({
         if (!selectedRoomId) return
 
         set({ isLoading: true })
+
+        // TODO: 추후 로깅 모듈로 관심사 분리
         console.log(`Fetching schedules for Room: ${selectedRoomId} on ${selectedDate.toISOString()}`)
 
         await new Promise((resolve) => setTimeout(resolve, 300))
 
         set({
-            // upcomingSchedules will be updated via setInitialData or real API later
             isLoading: false,
-        })
-    },
-    setInitialData: (reservations: Reservation[], schedules: ScheduleSlot[]) => {
-        set({
-            recentMeetings: reservations,
-            upcomingSchedules: schedules,
         })
     },
 }))
