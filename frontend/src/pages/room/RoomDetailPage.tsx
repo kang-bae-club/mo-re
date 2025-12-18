@@ -44,7 +44,18 @@ export const RoomDetailPage = () => {
                         <div className="flex flex-col">
                             <span className="text-xs font-bold text-gray-500 mb-1">날짜</span>
                             <div className="bg-gray-200 px-3 py-1.5 rounded text-sm text-gray-700 min-w-[120px] text-center">
-                                2024-12-16
+                                {/* TODO:아래 부분은 Date Picker 공통 컴포넌트로 치환합니다. */}
+                                <input
+                                    type="date"
+                                    value={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : ''}
+                                    onChange={(e) => {
+                                        if (roomId && e.target.value) {
+                                            setSelectedTimeRange(null)
+                                            fetchRoom(roomId, new Date(e.target.value))
+                                        }
+                                    }}
+                                    className="bg-transparent border-none outline-none w-full text-center cursor-pointer"
+                                />
                             </div>
                         </div>
                         <div className="flex flex-col">
