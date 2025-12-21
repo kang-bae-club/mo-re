@@ -9,11 +9,11 @@ interface RoomState {
     rooms: Room[]
     stats: DashboardStats
     selectedRoom: Room | null
-    selectedDate: Date | null
+    selectedDate: string | null
     roomReservations: Reservation[]
     isLoading: boolean
-    setRooms: (rooms: Room[]) => void
-    fetchRoom: (roomId: string, date?: Date) => Promise<void>
+    fetchRooms: () => Promise<void>
+    fetchRoom: (roomId: string, date?: string) => Promise<void>
     updateRoomStatus: (roomId: string, status: Room['status']) => void
     calculateStats: () => void
 }
@@ -26,20 +26,27 @@ export const useRoomStore = create<RoomState>((set, get) => ({
         inUseRooms: 0,
     },
     selectedRoom: null,
-    selectedDate: new Date(),
+    selectedDate: new Date().toISOString().split('T')[0],
     roomReservations: [],
     isLoading: false,
-    setRooms: (rooms) => {
-        set({ rooms })
-        get().calculateStats()
+    fetchRooms: async () => {
+        set({ isLoading: true })
+        try {
+            const rooms = await roomApi.getRooms()
+            set({ rooms })
+            get().calculateStats()
+        } catch (error) {
+            console.error('Failed to fetch rooms:', error)
+        } finally {
+            set({ isLoading: false })
+        }
     },
     fetchRoom: async (roomId, date) => {
-        const targetDate = date || get().selectedDate || new Date()
-        const dateString = targetDate.toISOString().split('T')[0]
+        const targetDate = date || get().selectedDate || new Date().toISOString().split('T')[0]
 
         set({ isLoading: true, selectedRoom: null, roomReservations: [], selectedDate: targetDate })
         try {
-            const response = await roomApi.getRoomDetail(roomId, dateString)
+            const response = await roomApi.getRoomDetail(roomId, targetDate)
             if (response) {
                 set({
                     selectedRoom: response.room,

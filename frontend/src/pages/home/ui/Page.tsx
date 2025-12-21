@@ -7,16 +7,21 @@ import {
     RoomGrid,
     RecentMeetingsTable,
 } from '@/widgets'
+import { useEffect } from 'react'
 import { useRoomStore } from '@/entities/room'
 import { useReservationStore } from '@/entities/reservation'
-
-// DashboardContent removed
+import { useSessionStore } from '@/entities/session'
 
 export const HomePage = () => {
-    const { stats, rooms } = useRoomStore()
-    const { recentMeetings } = useReservationStore()
-    // In a real app we might fetch here:
-    // useEffect(() => { useRoomStore.getState().calculateStats() }, [])
+    const { stats, rooms, fetchRooms } = useRoomStore()
+    const { recentMeetings, fetchRecentMeetings } = useReservationStore()
+    const { fetchSession } = useSessionStore()
+
+    useEffect(() => {
+        fetchSession()
+        fetchRooms()
+        fetchRecentMeetings()
+    }, [fetchSession, fetchRooms, fetchRecentMeetings])
 
     return (
         <MainLayout

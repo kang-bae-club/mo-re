@@ -1,6 +1,5 @@
 import { Room } from '@/entities/room'
 import { Reservation } from '@/entities/reservation'
-import { MOCK_ROOMS, MOCK_SCHEDULE_RESPONSE } from '@/shared/mocks'
 
 export interface RoomDetailResponse {
     room: Room
@@ -8,21 +7,29 @@ export interface RoomDetailResponse {
 }
 
 export const roomApi = {
+    getRooms: async (): Promise<Room[]> => {
+        try {
+            const response = await fetch('/api/rooms')
+            if (!response.ok) throw new Error('Failed to fetch rooms')
+            return await response.json()
+        } catch (error) {
+            console.error('API Error:', error)
+            return []
+        }
+    },
     getRoomDetail: async (roomId: string, originDate: string): Promise<RoomDetailResponse | null> => {
-        // Simulate network delay
-        await new Promise((resolve) => setTimeout(resolve, 500))
-        const room = MOCK_ROOMS.find((r) => r.id === roomId)
+        try {
+            const response = await fetch(`/api/rooms/${roomId}?date=${originDate}`)
 
-        if (!room) return null
+            if (!response.ok) {
+                if (response.status === 404) return null
+                throw new Error('Failed to fetch room detail')
+            }
 
-        // 일시적으로 모킹을 위해서 사용. 추후에는 {roomId, originDate} 데이터를 통해 API 호출 예정
-        const filteredReservations = MOCK_SCHEDULE_RESPONSE.reservations.filter(
-            (res) => res.meetingDate === originDate,
-        )
-
-        return {
-            room,
-            reservations: filteredReservations,
+            return await response.json()
+        } catch (error) {
+            console.error('API Error:', error)
+            return null
         }
     },
 }
