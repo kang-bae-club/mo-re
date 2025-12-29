@@ -56,6 +56,10 @@ export default [
                 {
                     code: 150,
                     tabWidth: 4,
+                    ignoreUrls: true,
+                    ignoreStrings: true,
+                    ignoreTemplateLiterals: true,
+                    ignoreRegExpLiterals: true,
                 },
             ],
 
