@@ -10,17 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-slot": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.556.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.4.0",
     "react-router-dom": "^7.10.1",
     "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@stylistic/eslint-plugin": "^3.1.0",
+    "@types/node": "^24.10.1",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react-swc": "^3.5.0",
@@ -32,7 +37,6 @@
     "globals": "^15.14.0",
     "msw": "^2.12.4",
     "postcss": "^8.5.6",
-    "prettier": "^3.7.4",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.23.0",
