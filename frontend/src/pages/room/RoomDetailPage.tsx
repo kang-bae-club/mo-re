@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { format } from 'date-fns'
 import { Info } from 'lucide-react'
 import { PageHeader } from '@/shared/ui'
 import { useRoomStore } from '@/entities/room'
@@ -47,11 +46,11 @@ export const RoomDetailPage = () => {
                                 {/* TODO:아래 부분은 Date Picker 공통 컴포넌트로 치환합니다. */}
                                 <input
                                     type="date"
-                                    value={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : ''}
+                                    value={selectedDate || ''}
                                     onChange={(e) => {
                                         if (roomId && e.target.value) {
                                             setSelectedTimeRange(null)
-                                            fetchRoom(roomId, new Date(e.target.value))
+                                            fetchRoom(roomId, e.target.value)
                                         }
                                     }}
                                     className="bg-transparent border-none outline-none w-full text-center cursor-pointer"
@@ -82,7 +81,9 @@ export const RoomDetailPage = () => {
                     <div className="mb-4 flex items-center justify-between border-b pb-2">
                         <h2 className="font-semibold text-gray-800">예약 현황</h2>
                         <span className="text-sm font-medium text-gray-500">
-                            {selectedDate ? format(selectedDate, 'yyyy.MM.dd') : ''}
+                            {/* 모든 하이픈(-)을 점(.)으로 치환, ex) 2025-12-31 -> 2025.12.31 */}
+                            {/* 화면에 보여줄 형식으로 지정함. */}
+                            {selectedDate ? selectedDate.replace(/-/g, '.') : ''}
                         </span>
                     </div>
                     <RoomScheduleTimeline

@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { format } from 'date-fns'
 import { DashboardStats } from '@/shared/model'
 import { Room, ROOM_STATUS } from '@/entities/room'
 import { Reservation } from '@/entities/reservation'
@@ -26,7 +27,7 @@ export const useRoomStore = create<RoomState>((set, get) => ({
         inUseRooms: 0,
     },
     selectedRoom: null,
-    selectedDate: new Date().toISOString().split('T')[0],
+    selectedDate: format(new Date(), 'yyyy-MM-dd'),
     roomReservations: [],
     isLoading: false,
     fetchRooms: async () => {
@@ -42,7 +43,7 @@ export const useRoomStore = create<RoomState>((set, get) => ({
         }
     },
     fetchRoom: async (roomId, date) => {
-        const targetDate = date || get().selectedDate || new Date().toISOString().split('T')[0]
+        const targetDate = date || get().selectedDate || format(new Date(), 'yyyy-MM-dd')
 
         set({ isLoading: true, selectedRoom: null, roomReservations: [], selectedDate: targetDate })
         try {
