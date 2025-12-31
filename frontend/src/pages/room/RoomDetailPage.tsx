@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { format } from 'date-fns'
 import { Info } from 'lucide-react'
 import { PageHeader } from '@/shared/ui'
 import { useRoomStore } from '@/entities/room'
@@ -44,7 +43,18 @@ export const RoomDetailPage = () => {
                         <div className="flex flex-col">
                             <span className="text-xs font-bold text-gray-500 mb-1">날짜</span>
                             <div className="bg-gray-200 px-3 py-1.5 rounded text-sm text-gray-700 min-w-[120px] text-center">
-                                2024-12-16
+                                {/* TODO:아래 부분은 Date Picker 공통 컴포넌트로 치환합니다. */}
+                                <input
+                                    type="date"
+                                    value={selectedDate || ''}
+                                    onChange={(e) => {
+                                        if (roomId && e.target.value) {
+                                            setSelectedTimeRange(null)
+                                            fetchRoom(roomId, e.target.value)
+                                        }
+                                    }}
+                                    className="bg-transparent border-none outline-none w-full text-center cursor-pointer"
+                                />
                             </div>
                         </div>
                         <div className="flex flex-col">
@@ -71,7 +81,9 @@ export const RoomDetailPage = () => {
                     <div className="mb-4 flex items-center justify-between border-b pb-2">
                         <h2 className="font-semibold text-gray-800">예약 현황</h2>
                         <span className="text-sm font-medium text-gray-500">
-                            {selectedDate ? format(selectedDate, 'yyyy.MM.dd') : ''}
+                            {/* 모든 하이픈(-)을 점(.)으로 치환, ex) 2025-12-31 -> 2025.12.31 */}
+                            {/* 화면에 보여줄 형식으로 지정함. */}
+                            {selectedDate ? selectedDate.replace(/-/g, '.') : ''}
                         </span>
                     </div>
                     <RoomScheduleTimeline
