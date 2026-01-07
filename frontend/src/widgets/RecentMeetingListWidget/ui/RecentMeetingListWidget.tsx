@@ -22,8 +22,11 @@ import { useRecentMeetings } from '@/features/reservation'
  * @date 2026-01-08
  */
 export const RecentMeetingListWidget = () => {
-    const { meetings } = useRecentMeetings()
+    const { meetings, isLoading } = useRecentMeetings()
     const [selectedMeeting, setSelectedMeeting] = useState<Reservation | null>(null)
+
+    // TODO: 로딩 스패너로 통합
+    if (isLoading) return <div>Loading...</div>
 
     return (
         <>

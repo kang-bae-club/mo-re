@@ -5,10 +5,8 @@ export const useRecentMeetings = () => {
     const { recentMeetings, fetchRecentMeetings, isLoading } = useReservationStore()
 
     useEffect(() => {
-        if (!recentMeetings.length) {
-            fetchRecentMeetings()
-        }
-    }, [recentMeetings.length, fetchRecentMeetings])
+        fetchRecentMeetings()
+    }, [fetchRecentMeetings])
 
     // 최신순(시작 시간 내림차순) 정렬
     const sortedMeetings = useMemo(() => {
