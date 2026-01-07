@@ -1,12 +1,29 @@
 import { ChevronDown } from 'lucide-react'
-import { Room, RoomCard } from '@/entities/room'
+import { RoomCard } from '@/entities/room'
 import { cn } from '@/shared/lib'
+import { useRoomData } from '@/features/room'
 
-interface RoomGridProps {
-    rooms: Room[]
-}
+/**
+ * **RoomListWidget**
+ *
+ * 전체 회의실 목록을 그리드 형태로 표시하여 시각적으로 제공하는 위젯입니다.
+ * 각 회의실의 상태(사용 중, 예약 가능 등)를 카드 형태로 보여주며, 상세 정보 확인을 위한 진입점 역할을 합니다.
+ *
+ * **Role**:
+ * - 회의실 목록 표시
+ * - 회의실 상태 시각화
+ *
+ * **Used By**:
+ * - [HomePage](src/pages/home/ui/Page.tsx)
+ *
+ * @author kangminjun
+ * @date 2026-01-08
+ */
+export const RoomListWidget = () => {
+    const { rooms, isLoading } = useRoomData()
 
-export const RoomGrid = ({ rooms }: RoomGridProps) => {
+    if (isLoading) return <div>Loading...</div>
+
     return (
         <>
             <div className="mb-4 flex items-center justify-between">

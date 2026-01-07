@@ -2,26 +2,20 @@ import {
     MainLayout,
     Sidebar,
     RightPanel,
-    StatusSection,
+    DashboardStatusWidget,
     DashboardHeader,
-    RoomGrid,
-    RecentMeetingsTable,
+    RoomListWidget,
+    RecentMeetingListWidget,
 } from '@/widgets'
-import { useEffect } from 'react'
-import { useRoomStore } from '@/entities/room'
-import { useReservationStore } from '@/entities/reservation'
 import { useSessionStore } from '@/entities/session'
+import { useEffect } from 'react'
 
 export const HomePage = () => {
-    const { stats, rooms, fetchRooms } = useRoomStore()
-    const { recentMeetings, fetchRecentMeetings } = useReservationStore()
     const { fetchSession } = useSessionStore()
 
     useEffect(() => {
         fetchSession()
-        fetchRooms()
-        fetchRecentMeetings()
-    }, [fetchSession, fetchRooms, fetchRecentMeetings])
+    }, [fetchSession])
 
     return (
         <MainLayout
@@ -32,11 +26,9 @@ export const HomePage = () => {
                         title="회의실 상태"
                         lastUpdated={new Date().toISOString()}
                     />
-                    <StatusSection stats={stats} />
-                    <RoomGrid rooms={rooms} />
-                    <RecentMeetingsTable
-                        meetings={recentMeetings}
-                    />
+                    <DashboardStatusWidget />
+                    <RoomListWidget />
+                    <RecentMeetingListWidget />
                 </div>
             }
             rightPanel={<RightPanel />}
