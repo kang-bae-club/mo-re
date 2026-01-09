@@ -1,18 +1,32 @@
-
 import { useState } from 'react'
-import { DashboardStats } from '@/shared/model'
 import { RoomFilterType, ROOM_FILTER } from '@/entities/room'
 import { RoomFilterModal } from '@/features/room-filter'
 import { StatusCard } from '@/entities/room'
+import { useRoomData } from '@/features/room'
 
-interface StatusSectionProps {
-    stats: DashboardStats
-}
-
-export const StatusSection = ({ stats }: StatusSectionProps) => {
+/**
+ * **DashboardStatusWidget**
+ *
+ * 메인 대시보드 상단에 배치되어 객실 예약 현황(전체, 사용 가능, 사용 중)을 요약 표시하는 위젯입니다.
+ * 사용자의 액션에 따라 현황별 상세 필터링 기능을 모달을 통해 제공하며, 실시간 통계 데이터를 시각화합니다.
+ *
+ * **Role**:
+ * - 객실 상태 요약
+ * - 필터 모달 제어
+ *
+ * **Used By**:
+ * - [HomePage](src/pages/home/ui/Page.tsx)
+ *
+ * @author kangminjun
+ * @date 2026-01-08
+ */
+export const DashboardStatusWidget = () => {
+    const { stats, isLoading } = useRoomData()
     const [selectedFilter, setSelectedFilter] = useState<RoomFilterType | null>(
         null,
     )
+    // TODO: 로딩 스패너로 통합
+    if (isLoading) return <div>Loading...</div>
 
     return (
         <>

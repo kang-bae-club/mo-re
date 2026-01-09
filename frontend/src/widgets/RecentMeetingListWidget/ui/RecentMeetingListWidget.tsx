@@ -3,13 +3,30 @@ import { ChevronDown } from 'lucide-react'
 import { MeetingDetailsModal } from '@/entities/reservation'
 import { Reservation } from '@/entities/reservation'
 import { cn, formatRelativeTime } from '@/shared/lib'
+import { useRecentMeetings } from '@/features/reservation'
 
-interface RecentMeetingsTableProps {
-    meetings: Reservation[]
-}
-
-export const RecentMeetingsTable = ({ meetings }: RecentMeetingsTableProps) => {
+/**
+ * **RecentMeetingListWidget**
+ *
+ * 가장 최근에 잡힌 회의 일정들을 리스트(테이블) 형태로 제공하는 위젯입니다.
+ * 회의 주최자, 시간, 안건 등의 핵심 정보를 요약해서 보여주며, 클릭 시 상세 모달을 띄우는 인터랙션을 제공합니다.
+ *
+ * **Role**:
+ * - 최신 회의 내역 조회
+ * - 회의 상세 정보 확인 (Modal)
+ *
+ * **Used By**:
+ * - [HomePage](src/pages/home/ui/Page.tsx)
+ *
+ * @author kangminjun
+ * @date 2026-01-08
+ */
+export const RecentMeetingListWidget = () => {
+    const { meetings, isLoading } = useRecentMeetings()
     const [selectedMeeting, setSelectedMeeting] = useState<Reservation | null>(null)
+
+    // TODO: 로딩 스패너로 통합
+    if (isLoading) return <div>Loading...</div>
 
     return (
         <>
