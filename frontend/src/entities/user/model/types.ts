@@ -1,14 +1,17 @@
 export interface Member {
-    id: string
-    name: string
-    role: string
-    team: string // e.g., "선영 사랑 운영팀", "개발팀"
-    department: string // e.g. "Product Group"
-    avatarUrl?: string // e.g. /profile.jpg
+    memberId: string // 사원번호
+    password: string // 비밀번호
+    name: string // 이름
+    email: string // 이메일
+    phone: string // 전화번호
+    position: string // 직급
+    deptName: string // 부서명
+    username: string // 유저아이디
+    avatarUrl?: string // 프로필사진
 }
 
 export interface Organization {
     id: number
-    name: string // e.g., "강배 클럽"
+    name: string
     avatarUrl?: string
 }

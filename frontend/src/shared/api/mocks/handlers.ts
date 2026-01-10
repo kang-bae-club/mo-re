@@ -1,10 +1,17 @@
 import { http, HttpResponse } from 'msw'
-import { MOCK_ROOMS, RECENT_MEETINGS, MOCK_SCHEDULE_RESPONSE, MOCK_USER } from '@/shared/mocks'
+import { MOCK_ROOMS, RECENT_MEETINGS, MOCK_SCHEDULE_RESPONSE } from '@/shared/mocks'
+import { MOCK_USER } from '@/shared/mocks/user'
 
 // service worker가 http 요청을 가로채서 처리 
 export const handlers = [
     // 1. GET /api/me
     http.get('/api/me', () => {
+        const isAuthenticated = sessionStorage.getItem('is-authenticated')
+
+        if (!isAuthenticated) {
+            return new HttpResponse(null, { status: 401 })
+        }
+
         return HttpResponse.json({
             user: MOCK_USER,
             organization: {
@@ -13,6 +20,37 @@ export const handlers = [
                 avatarUrl: 'https://api.dicebear.com/7.x/initials/svg?seed=Org',
             },
         })
+    }),
+
+    // 0. POST /api/login
+    http.post('/api/login', async ({ request }) => {
+        try {
+            const body = (await request.json()) as any
+            const { username, password } = body
+
+            console.log('Login Request:', { username, password })
+            if (!MOCK_USER) {
+                console.error('MOCK_USER is undefined!')
+                return new HttpResponse(null, { status: 500 })
+            }
+            console.log('Mock User:', { username: MOCK_USER.username, password: MOCK_USER.password })
+
+            if (username === MOCK_USER.username && password === MOCK_USER.password) {
+                sessionStorage.setItem('is-authenticated', 'true')
+                return HttpResponse.json({ success: true })
+            }
+
+            return new HttpResponse(null, { status: 401 })
+        } catch (error) {
+            console.error('Login Handler Error:', error)
+            return new HttpResponse(null, { status: 500 })
+        }
+    }),
+
+    // 0. POSt /api/logout
+    http.post('/api/logout', () => {
+        sessionStorage.removeItem('is-authenticated')
+        return HttpResponse.json({ success: true })
     }),
 
     // 2. GET /api/rooms

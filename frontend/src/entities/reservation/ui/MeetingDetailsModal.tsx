@@ -234,7 +234,7 @@ export const MeetingDetailsModal = ({ isOpen, onClose, meeting }: MeetingDetails
                 >
                     <div className="font-semibold">{hoveredAttendee.name}</div>
                     <div className="text-gray-300">
-                        {hoveredAttendee.department} | {hoveredAttendee.team}
+                        {hoveredAttendee.deptName} | {hoveredAttendee.position}
                     </div>
                     {/* Triangle pointer */}
                     <div className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 bg-gray-900 rotate-45" />

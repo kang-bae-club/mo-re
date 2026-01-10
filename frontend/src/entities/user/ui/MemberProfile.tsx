@@ -35,10 +35,10 @@ export const MemberProfile = ({
                                 'ml-1 text-xs font-normal text-gray-500',
                             )}
                         >
-                            {member.role}
+                            {member.position}
                         </span>
                     </div>
-                    <div className="text-xs text-gray-500">{member.team}</div>
+                    <div className="text-xs text-gray-500">{member.deptName}</div>
                 </div>
             )}
         </div>

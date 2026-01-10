@@ -7,19 +7,28 @@ interface SessionState {
     user: Member | null
     organization: Organization | null
     isLoading: boolean
-    login: () => void
-    logout: () => void
+    isInitialized: boolean
+    login: (username?: string, password?: string) => Promise<boolean>
+    logout: () => Promise<void>
     fetchSession: () => Promise<void>
 }
 
-export const useSessionStore = create<SessionState>((set) => ({
+export const useSessionStore = create<SessionState>((set, get) => ({
     user: null,
     organization: null,
     isLoading: false,
-    login: () => {
-        console.log('Login implemented in future')
+    isInitialized: false,
+    login: async (username, password) => {
+        const success = await authApi.login(username, password)
+        if (success) {
+            await get().fetchSession()
+        }
+        return success
     },
-    logout: () => set({ user: null }),
+    logout: async () => {
+        await authApi.logout()
+        set({ user: null })
+    },
     fetchSession: async () => {
         set({ isLoading: true })
         try {
@@ -30,7 +39,7 @@ export const useSessionStore = create<SessionState>((set) => ({
         } catch (error) {
             console.error('Failed to fetch session:', error)
         } finally {
-            set({ isLoading: false })
+            set({ isLoading: false, isInitialized: true })
         }
     },
 }))

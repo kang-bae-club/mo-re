@@ -1,5 +1,6 @@
 import { Room } from '@/entities/room'
 import { Reservation } from '@/entities/reservation'
+import { httpClient } from './HttpClient'
 
 export interface RoomDetailResponse {
     room: Room
@@ -9,9 +10,8 @@ export interface RoomDetailResponse {
 export const roomApi = {
     getRooms: async (): Promise<Room[]> => {
         try {
-            const response = await fetch('/api/rooms')
-            if (!response.ok) throw new Error('Failed to fetch rooms')
-            return await response.json()
+            const response = await httpClient.get<Room[]>('/api/rooms')
+            return response.data
         } catch (error) {
             console.error('API Error:', error)
             return []
@@ -19,15 +19,12 @@ export const roomApi = {
     },
     getRoomDetail: async (roomId: string, originDate: string): Promise<RoomDetailResponse | null> => {
         try {
-            const response = await fetch(`/api/rooms/${roomId}?date=${originDate}`)
-
-            if (!response.ok) {
-                if (response.status === 404) return null
-                throw new Error('Failed to fetch room detail')
+            const response = await httpClient.get<RoomDetailResponse>(`/api/rooms/${roomId}?date=${originDate}`)
+            return response.data
+        } catch (error: any) {
+            if (error.response && error.response.status === 404) {
+                return null
             }
-
-            return await response.json()
-        } catch (error) {
             console.error('API Error:', error)
             return null
         }
