@@ -7,32 +7,26 @@ import {
     Users,
 } from 'lucide-react'
 
-type LogoConfig =
-    | {
-        type: 'text'
-        value: string
-        style: { bg: string; text_color: string }
-    }
-    | {
-        type: 'image'
+type LogoConfig = {
+    type: 'image'
+    image: {
         src: string
         alt: string
         style?: { width?: string; height?: string }
     }
+}
 
 export const APP_CONFIG = {
     name: '모리',
     logo: {
-        type: 'text',
-        value: 'Logo',
-        style: {
-            bg: 'bg-brand-blue',
-            text_color: 'text-white',
-        },
+        type: 'image',
+        image: {
+            src: '/logo/icon_eng_logo1.png',
+            alt: 'Logo',
+            style: { width: 'w-full', height: 'h-full' }
+        }
     } as LogoConfig,
 }
-
-// ORG_CONFIG removed
 
 export const NAV_CONFIG = [
     {

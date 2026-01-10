@@ -4,20 +4,23 @@ import { cn } from '@/shared/lib'
 import { MemberProfile } from '@/entities/user'
 import { APP_CONFIG, NAV_CONFIG, USER_MENU_CONFIG } from '@/shared/config'
 import { useSessionStore } from '@/entities/session'
+import { useState } from 'react'
 
 const Logo = () => {
     const { logo, name } = APP_CONFIG
+    const [isError, setIsError] = useState(false)
 
     return (
-        <div className="flex items-center gap-2">
-            {logo.type === 'image' ? (
+        <div className="flex items-center gap-1">
+            {!isError ? (
                 <img
-                    src={logo.src}
-                    alt={logo.alt}
+                    src={logo.image.src}
+                    alt={logo.image.alt}
+                    onError={() => setIsError(true)}
                     className={cn(
-                        'h-10 w-10 object-contain',
-                        logo.style?.width,
-                        logo.style?.height,
+                        'object-contain',
+                        logo.image.style?.width,
+                        logo.image.style?.height,
                     )}
                 />
             ) : (
@@ -25,14 +28,11 @@ const Logo = () => {
                     className={cn(
                         'flex h-10 w-10 items-center justify-center',
                         'rounded-full font-bold',
-                        logo.style.bg,
-                        logo.style.text_color,
                     )}
                 >
-                    {logo.value}
+                    {name}
                 </div>
             )}
-            <span className="text-2xl font-black text-brand-blue">{name}</span>
         </div>
     )
 }
