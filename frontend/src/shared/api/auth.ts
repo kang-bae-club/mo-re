@@ -26,7 +26,7 @@ export const authApi = {
         try {
             const response = await httpClient.post('/api/login', { username, password })
             return response.status === 200
-        } catch (error) {
+        } catch {
             return false
         }
     },
@@ -34,7 +34,7 @@ export const authApi = {
         try {
             const response = await httpClient.post('/api/logout')
             return response.status === 200
-        } catch (error) {
+        } catch {
             return false
         }
     },

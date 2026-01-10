@@ -1,6 +1,5 @@
 import { http, HttpResponse } from 'msw'
-import { MOCK_ROOMS, RECENT_MEETINGS, MOCK_SCHEDULE_RESPONSE } from '@/shared/mocks'
-import { MOCK_USER } from '@/shared/mocks/user'
+import { MOCK_ROOMS, RECENT_MEETINGS, MOCK_SCHEDULE_RESPONSE, MOCK_USER } from '@/shared/mocks'
 
 // service worker가 http 요청을 가로채서 처리 
 export const handlers = [
@@ -25,7 +24,7 @@ export const handlers = [
     // 0. POST /api/login
     http.post('/api/login', async ({ request }) => {
         try {
-            const body = (await request.json()) as any
+            const body = (await request.json()) as { username?: string; password?: string }
             const { username, password } = body
 
             console.log('Login Request:', { username, password })

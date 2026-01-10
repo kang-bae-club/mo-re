@@ -8,27 +8,18 @@ interface SessionState {
     organization: Organization | null
     isLoading: boolean
     isInitialized: boolean
-    login: (username?: string, password?: string) => Promise<boolean>
-    logout: () => Promise<void>
+    setSession: (user: Member, organization: Organization) => void
+    clearSession: () => void
     fetchSession: () => Promise<void>
 }
 
-export const useSessionStore = create<SessionState>((set, get) => ({
+export const useSessionStore = create<SessionState>((set) => ({
     user: null,
     organization: null,
     isLoading: false,
     isInitialized: false,
-    login: async (username, password) => {
-        const success = await authApi.login(username, password)
-        if (success) {
-            await get().fetchSession()
-        }
-        return success
-    },
-    logout: async () => {
-        await authApi.logout()
-        set({ user: null })
-    },
+    setSession: (user, organization) => set({ user, organization }),
+    clearSession: () => set({ user: null, organization: null }),
     fetchSession: async () => {
         set({ isLoading: true })
         try {
@@ -43,3 +34,5 @@ export const useSessionStore = create<SessionState>((set, get) => ({
         }
     },
 }))
+
+
