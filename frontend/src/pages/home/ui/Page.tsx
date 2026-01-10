@@ -1,6 +1,6 @@
 import {
     MainLayout,
-    Sidebar,
+    SidebarLayout,
     RightPanel,
     DashboardStatusWidget,
     DashboardHeader,
@@ -19,7 +19,7 @@ export const HomePage = () => {
 
     return (
         <MainLayout
-            sidebar={<Sidebar />}
+            sidebar={<SidebarLayout />}
             content={
                 <div>
                     <DashboardHeader
