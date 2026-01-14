@@ -2,7 +2,6 @@ import { Member } from '@/entities/user'
 
 export const MOCK_USER: Member = {
     memberId: '20240001',
-    password: 'password123!',
     name: '강민준',
     email: 'k.minjun@company.com',
     phone: '010-1234-5678',

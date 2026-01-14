@@ -1,6 +1,5 @@
 export interface Member {
     memberId: string // 사원번호
-    password: string // 비밀번호
     name: string // 이름
     email: string // 이메일
     phone: string // 전화번호

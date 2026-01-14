@@ -1,1 +1,1 @@
-export { LoginButton } from './LoginButton'
+export * from './LoginButton'

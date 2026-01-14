@@ -8,6 +8,7 @@ const instance = axios.create({
     },
 })
 
+// 401 에러 발생 시 unauthorized event 발생
 instance.interceptors.response.use(
     (response) => response,
     (error) => {

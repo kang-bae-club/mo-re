@@ -9,6 +9,7 @@ export const useLogin = () => {
     const location = useLocation()
     const from = location.state?.from?.pathname || '/'
 
+    // TODO: 아이디와 비밀번호 유효성 검사 - 공통 컴포넌트로 수정 예정
     const login = async (username?: string, password?: string) => {
         if (!username || !password) {
             alert('아이디와 비밀번호를 입력해주세요.')
@@ -24,7 +25,7 @@ export const useLogin = () => {
             } else {
                 alert('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.')
             }
-        } catch (error) {
+        } catch (error) { // TODO: 5xx 에러 처리는 중앙화하여 처리 예정
             console.error('Login failed', error)
             alert('로그인 중 오류가 발생했습니다.')
         } finally {

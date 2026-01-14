@@ -22,6 +22,7 @@ export const authApi = {
             return null
         }
     },
+    // TODO: 로그인 후 세션 및 유저 정보 저장
     login: async (username?: string, password?: string): Promise<boolean> => {
         try {
             const response = await httpClient.post('/api/login', { username, password })
