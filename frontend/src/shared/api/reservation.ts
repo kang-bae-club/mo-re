@@ -1,11 +1,11 @@
 import { Reservation } from '@/entities/reservation'
+import { httpClient } from './HttpClient'
 
 export const reservationApi = {
     getRecentMeetings: async (): Promise<Reservation[]> => {
         try {
-            const response = await fetch('/api/reservations/recent')
-            if (!response.ok) throw new Error('Failed to fetch recent meetings')
-            return await response.json()
+            const response = await httpClient.get<Reservation[]>('/api/reservations/recent')
+            return response.data
         } catch (error) {
             console.error('Reservation API Error:', error)
             return []

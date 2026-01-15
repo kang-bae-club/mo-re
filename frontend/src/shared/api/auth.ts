@@ -1,4 +1,5 @@
 import { Member } from '@/entities/user'
+import { httpClient } from './HttpClient'
 
 interface Organization {
     id: number
@@ -14,12 +15,28 @@ export interface AuthSessionResponse {
 export const authApi = {
     getUserSession: async (): Promise<AuthSessionResponse | null> => {
         try {
-            const response = await fetch('/api/me')
-            if (!response.ok) throw new Error('Failed to fetch session')
-            return await response.json()
+            const response = await httpClient.get<AuthSessionResponse>('/api/me')
+            return response.data
         } catch (error) {
             console.error('Auth API Error:', error)
             return null
+        }
+    },
+    // TODO: 로그인 후 세션 및 유저 정보 저장
+    login: async (username?: string, password?: string): Promise<boolean> => {
+        try {
+            const response = await httpClient.post('/api/login', { username, password })
+            return response.status === 200
+        } catch {
+            return false
+        }
+    },
+    logout: async (): Promise<boolean> => {
+        try {
+            const response = await httpClient.post('/api/logout')
+            return response.status === 200
+        } catch {
+            return false
         }
     },
 }

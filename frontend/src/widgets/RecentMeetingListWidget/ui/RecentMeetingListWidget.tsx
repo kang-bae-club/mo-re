@@ -70,7 +70,7 @@ export const RecentMeetingListWidget = () => {
                                             {m.organizer.name}
                                         </span>
                                         <span className="text-xs text-gray-500">
-                                            {m.organizer.role}
+                                            {m.organizer.position}
                                         </span>
                                     </div>
                                 </td>

@@ -7,8 +7,9 @@ interface SessionState {
     user: Member | null
     organization: Organization | null
     isLoading: boolean
-    login: () => void
-    logout: () => void
+    isInitialized: boolean
+    setSession: (user: Member, organization: Organization) => void
+    clearSession: () => void
     fetchSession: () => Promise<void>
 }
 
@@ -16,10 +17,9 @@ export const useSessionStore = create<SessionState>((set) => ({
     user: null,
     organization: null,
     isLoading: false,
-    login: () => {
-        console.log('Login implemented in future')
-    },
-    logout: () => set({ user: null }),
+    isInitialized: false,
+    setSession: (user, organization) => set({ user, organization }),
+    clearSession: () => set({ user: null, organization: null }),
     fetchSession: async () => {
         set({ isLoading: true })
         try {
@@ -30,7 +30,9 @@ export const useSessionStore = create<SessionState>((set) => ({
         } catch (error) {
             console.error('Failed to fetch session:', error)
         } finally {
-            set({ isLoading: false })
+            set({ isLoading: false, isInitialized: true })
         }
     },
 }))
+
+
