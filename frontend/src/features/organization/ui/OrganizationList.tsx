@@ -8,12 +8,13 @@ export const OrganizationList = () => {
     const organization = useSessionStore((state) => state.organization)
     const switchOrganization = useSessionStore((state) => state.switchOrganization)
 
-    const { organizations } = useOrganizationList()
+    const { organizations, isLoading } = useOrganizationList()
 
     const [isOpen, setIsOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
+        if (!isOpen) return
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsOpen(false)
@@ -23,6 +24,9 @@ export const OrganizationList = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
 
+    if (isLoading) {
+        return <div>isLoading...</div>
+    }
     if (!organization) return null
 
     return (
@@ -45,7 +49,7 @@ export const OrganizationList = () => {
                 </div>
                 <ChevronDown
                     size={16}
-                    className={cn("transition-transform duration-200", isOpen && "rotate-180")}
+                    className={cn('transition-transform duration-200', isOpen && 'rotate-180')}
                 />
             </div>
 
@@ -55,9 +59,9 @@ export const OrganizationList = () => {
                         <div
                             key={org.id}
                             className={cn(
-                                "flex items-center justify-between px-3 py-2.5 text-sm cursor-pointer transition-colors",
-                                "hover:bg-gray-50",
-                                org.id === organization.id && "bg-blue-50 text-blue-600 font-medium"
+                                'flex items-center justify-between px-3 py-2.5 text-sm cursor-pointer transition-colors',
+                                'hover:bg-gray-50',
+                                org.id === organization.id && 'bg-blue-50 text-blue-600 font-medium',
                             )}
                             onClick={() => {
                                 switchOrganization(org)

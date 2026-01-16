@@ -12,6 +12,7 @@ export interface AuthSessionResponse {
     organization: Organization
 }
 
+// TODO: 현재는 단순히 ok state만 체크, 추후에 응답 코드별 던지는 예외를 커스터마이징 (공통 에러 Http응답 정의)
 export const authApi = {
     getUserSession: async (): Promise<AuthSessionResponse | null> => {
         try {

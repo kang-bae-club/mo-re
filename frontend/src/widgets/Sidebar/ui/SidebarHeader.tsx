@@ -24,10 +24,10 @@ export const SidebarHeader = () => {
                     <div
                         className={cn(
                             'flex h-10 w-10 items-center justify-center',
-                            'rounded-full font-bold',
+                            'rounded-full font-bold bg-brand-blue text-white',
                         )}
                     >
-                        {name}
+                        {name.charAt(0)}
                     </div>
                 )}
             </div>

@@ -7,7 +7,7 @@ import {
     Users,
 } from 'lucide-react'
 
-type LogoConfig = {
+interface LogoConfig {
     type: 'image'
     image: {
         src: string
@@ -23,8 +23,8 @@ export const APP_CONFIG = {
         image: {
             src: '/logo/icon_eng_logo1.png',
             alt: 'Logo',
-            style: { width: 'w-full', height: 'h-full' }
-        }
+            style: { width: 'w-full', height: 'h-full' },
+        },
     } as LogoConfig,
 }
 

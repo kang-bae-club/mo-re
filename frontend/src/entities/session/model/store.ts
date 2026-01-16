@@ -1,5 +1,8 @@
 import { create } from 'zustand'
+
 import { Member, Organization } from '@/entities/user'
+import { useRoomStore } from '@/entities/room'
+import { useReservationStore } from '@/entities/reservation'
 import { authApi } from '@/shared/api'
 
 
@@ -22,7 +25,21 @@ export const useSessionStore = create<SessionState>((set) => ({
     isInitialized: false,
     setSession: (user, organization) => set({ user, organization }),
     clearSession: () => set({ user: null, organization: null }),
-    switchOrganization: (organization) => set({ organization }),
+    switchOrganization: (organization) => {
+        set({ organization })
+
+        useRoomStore.setState({
+            selectedRoom: null,
+            roomReservations: [],
+        })
+        useRoomStore.getState().fetchRooms()
+
+        useReservationStore.setState({
+            selectedRoomId: null,
+            upcomingSchedules: [],
+        })
+        useReservationStore.getState().fetchRecentMeetings()
+    },
     fetchSession: async () => {
         set({ isLoading: true })
         try {
