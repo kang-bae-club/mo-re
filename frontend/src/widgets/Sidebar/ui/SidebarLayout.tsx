@@ -1,6 +1,6 @@
 import { useSessionStore } from '@/entities/session'
 import { SidebarHeader } from './SidebarHeader'
-import { OrganizationList } from './OrganizationList'
+import { OrganizationList } from '@/features/organization'
 import { SidebarNavigation } from './SidebarNavigation'
 import { SidebarFooter } from './SidebarFooter'
 

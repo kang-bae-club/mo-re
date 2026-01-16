@@ -39,4 +39,13 @@ export const authApi = {
             return false
         }
     },
+    getOrganizationList: async (): Promise<Organization[]> => {
+        try {
+            const response = await httpClient.get<Organization[]>('/api/organizations')
+            return response.data
+        } catch (error) {
+            console.error('Fetch Org Error:', error)
+            return []
+        }
+    },
 }

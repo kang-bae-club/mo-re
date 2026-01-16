@@ -7,5 +7,6 @@ export interface SidebarNavGroupProps {
 
 export interface SidebarNavItemProps {
     icon: ElementType
+    path: string
     children: ReactNode
 }
