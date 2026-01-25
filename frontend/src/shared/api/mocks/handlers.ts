@@ -92,4 +92,12 @@ export const handlers = [
     http.get('/api/reservations/recent', () => {
         return HttpResponse.json(RECENT_MEETINGS)
     }),
+
+    // 5. GET /api/organizations
+    http.get('/api/organizations', () => {
+        return HttpResponse.json([
+            { id: 1, name: '강배 클럽', avatarUrl: '/logo/icon_eng_logo1.png' },
+            { id: 2, name: '다른 조직', avatarUrl: '/logo/icon_eng_logo1.png' },
+        ])
+    }),
 ]
