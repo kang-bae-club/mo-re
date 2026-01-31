@@ -4,6 +4,7 @@ import { Member, Organization } from '@/entities/user'
 import { useRoomStore } from '@/entities/room'
 import { useReservationStore } from '@/entities/reservation'
 import { authApi } from '@/shared/api'
+import { tokenService } from '@/shared/lib'
 
 
 interface SessionState {
@@ -24,7 +25,10 @@ export const useSessionStore = create<SessionState>((set) => ({
     isLoading: false,
     isInitialized: false,
     setSession: (user, organization) => set({ user, organization }),
-    clearSession: () => set({ user: null, organization: null }),
+    clearSession: () => {
+        tokenService.removeAccessToken()
+        set({ user: null, organization: null })
+    },
     switchOrganization: (organization) => {
         set({ organization })
 
