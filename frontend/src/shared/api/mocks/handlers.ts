@@ -18,8 +18,8 @@ const createMockJwt = (userId: string) => {
 
 // service worker가 http 요청을 가로채서 처리 
 export const handlers = [
-    // 1. GET /api/me
-    http.get('/api/me', ({ request }) => {
+    // 1. GET /v1/users/me
+    http.get('/v1/users/me', ({ request }) => {
         const authHeader = request.headers.get('Authorization')
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return new HttpResponse(null, { status: 401 })
@@ -35,8 +35,8 @@ export const handlers = [
         })
     }),
 
-    // 0. POST /api/login
-    http.post('/api/login', async ({ request }) => {
+    // 0. POST /v1/users/login
+    http.post('/v1/users/login', async ({ request }) => {
         try {
             const body = (await request.json()) as { username?: string; password?: string }
             const { username, password } = body
@@ -71,8 +71,8 @@ export const handlers = [
         }
     }),
 
-    // 0. POST /api/logout
-    http.post('/api/logout', () => {
+    // 0. POST /v1/users/logout
+    http.post('/v1/users/logout', () => {
         return HttpResponse.json(
             { success: true },
             {
