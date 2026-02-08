@@ -10,9 +10,11 @@ import { tokenService } from '@/shared/lib'
 interface SessionState {
     user: Member | null
     organization: Organization | null
+    accessToken: string | null
     isLoading: boolean
     isInitialized: boolean
     setSession: (user: Member, organization: Organization) => void
+    setAccessToken: (token: string) => void
     clearSession: () => void
     fetchSession: () => Promise<void>
     // TODO: organization switch 시에 영향을 받는 reservation, room과 같은 store를 같은 생명주기로 관리
@@ -22,12 +24,17 @@ interface SessionState {
 export const useSessionStore = create<SessionState>((set) => ({
     user: null,
     organization: null,
+    accessToken: null,
     isLoading: false,
     isInitialized: false,
     setSession: (user, organization) => set({ user, organization }),
+    setAccessToken: (token) => {
+        tokenService.setAccessToken(token)
+        set({ accessToken: token })
+    },
     clearSession: () => {
         tokenService.removeAccessToken()
-        set({ user: null, organization: null })
+        set({ user: null, organization: null, accessToken: null })
     },
     switchOrganization: (organization) => {
         set({ organization })

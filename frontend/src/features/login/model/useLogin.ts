@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSessionStore } from '@/entities/session'
 import { authApi } from '@/shared/api'
-import { tokenService } from '@/shared/lib'
+
 
 export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -21,7 +21,7 @@ export const useLogin = () => {
         try {
             const accessToken = await authApi.login(username, password)
             if (accessToken) {
-                tokenService.setAccessToken(accessToken)
+                useSessionStore.getState().setAccessToken(accessToken)
                 // 로그인에 성공하면 전달받은 accessToken을 이용하여 사용자와 조직 정보를 요청
                 await useSessionStore.getState().fetchSession()
                 navigate(from, { replace: true })

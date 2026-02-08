@@ -1,13 +1,14 @@
-export const ACCESS_TOKEN_KEY = 'accessToken'
+// 메모리 상에 토큰을 저장 (새로고침 시 초기화됨에 주의)
+let _accessToken: string | null = null
 
 export const tokenService = {
     getAccessToken: (): string | null => {
-        return sessionStorage.getItem(ACCESS_TOKEN_KEY)
+        return _accessToken
     },
     setAccessToken: (token: string): void => {
-        sessionStorage.setItem(ACCESS_TOKEN_KEY, token)
+        _accessToken = token
     },
     removeAccessToken: (): void => {
-        sessionStorage.removeItem(ACCESS_TOKEN_KEY)
+        _accessToken = null
     },
 }
