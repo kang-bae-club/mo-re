@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { tokenService } from '@/shared/lib'
+import { useTokenStore } from '@/shared/lib'
 
 export const UNAUTHORIZED_EVENT = 'unauthorized'
 
@@ -22,7 +22,7 @@ instance.interceptors.response.use(
 
 instance.interceptors.request.use(
     (config) => {
-        const accessToken = tokenService.getAccessToken()
+        const accessToken = useTokenStore.getState().accessToken
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`
         }
