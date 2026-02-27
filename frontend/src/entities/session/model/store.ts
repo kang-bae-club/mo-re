@@ -5,7 +5,6 @@ import { useRoomStore } from '@/entities/room'
 import { useReservationStore } from '@/entities/reservation'
 import { authApi } from '@/shared/api'
 
-
 interface SessionState {
     user: Member | null
     organization: Organization | null
@@ -24,7 +23,10 @@ export const useSessionStore = create<SessionState>((set) => ({
     isLoading: false,
     isInitialized: false,
     setSession: (user, organization) => set({ user, organization }),
-    clearSession: () => set({ user: null, organization: null }),
+
+    clearSession: () => {
+        set({ user: null, organization: null })
+    },
     switchOrganization: (organization) => {
         set({ organization })
 

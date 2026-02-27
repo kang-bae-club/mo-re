@@ -1,5 +1,6 @@
 import { useLogin } from '../model'
 import { Button } from '@/shared/ui'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 interface LoginButtonProps {
     username?: string
@@ -8,9 +9,17 @@ interface LoginButtonProps {
 
 export const LoginButton = ({ username, password }: LoginButtonProps) => {
     const { login, isLoading } = useLogin()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || '/'
 
-    const handleLogin = () => {
-        login(username, password)
+    const handleLogin = async () => {
+        const { success, errorMessage } = await login(username, password)
+        if (success) {
+            navigate(from, { replace: true })
+        } else if (errorMessage) {
+            alert(errorMessage)
+        }
     }
 
     return (

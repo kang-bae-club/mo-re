@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { useTokenStore } from '@/shared/lib'
 
 export const UNAUTHORIZED_EVENT = 'unauthorized'
 
@@ -17,6 +18,17 @@ instance.interceptors.response.use(
         }
         return Promise.reject(error)
     },
+)
+
+instance.interceptors.request.use(
+    (config) => {
+        const accessToken = useTokenStore.getState().accessToken
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`
+        }
+        return config
+    },
+    (error) => Promise.reject(error),
 )
 
 export const httpClient = {

@@ -3,13 +3,25 @@ import { MOCK_ROOMS, RECENT_MEETINGS, MOCK_SCHEDULE_RESPONSE, MOCK_USER } from '
 
 const VALID_PASSWORD = 'password123!'
 
+const createMockJwt = (userId: string) => {
+    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))
+    const payload = btoa(
+        JSON.stringify({
+            sub: userId,
+            exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour
+            iat: Math.floor(Date.now() / 1000),
+        }),
+    )
+    const signature = btoa('mock-signature')
+    return `${header}.${payload}.${signature}`
+}
+
 // service worker가 http 요청을 가로채서 처리 
 export const handlers = [
-    // 1. GET /api/me
-    http.get('/api/me', () => {
-        const isAuthenticated = sessionStorage.getItem('is-authenticated')
-
-        if (!isAuthenticated) {
+    // 1. GET /v1/users/me
+    http.get('/v1/users/me', ({ request }) => {
+        const authHeader = request.headers.get('Authorization')
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return new HttpResponse(null, { status: 401 })
         }
 
@@ -23,8 +35,8 @@ export const handlers = [
         })
     }),
 
-    // 0. POST /api/login
-    http.post('/api/login', async ({ request }) => {
+    // 0. POST /v1/users/login
+    http.post('/v1/users/login', async ({ request }) => {
         try {
             const body = (await request.json()) as { username?: string; password?: string }
             const { username, password } = body
@@ -35,9 +47,21 @@ export const handlers = [
                 return new HttpResponse(null, { status: 500 })
             }
 
+            // 가상의 accessToken과 refreshToken 생성
             if (username === MOCK_USER.username && password === VALID_PASSWORD) {
-                sessionStorage.setItem('is-authenticated', 'true')
-                return HttpResponse.json({ success: true })
+                const accessToken = createMockJwt(MOCK_USER.memberId)
+                const refreshToken = createMockJwt(MOCK_USER.memberId)
+
+                return HttpResponse.json(
+                    {
+                        accessToken,
+                    },
+                    {
+                        headers: {
+                            'Set-Cookie': `refreshToken=${refreshToken}; Path=/; HttpOnly; Secure; SameSite=Strict`,
+                        },
+                    },
+                )
             }
 
             return new HttpResponse(null, { status: 401 })
@@ -47,10 +71,16 @@ export const handlers = [
         }
     }),
 
-    // 0. POSt /api/logout
-    http.post('/api/logout', () => {
-        sessionStorage.removeItem('is-authenticated')
-        return HttpResponse.json({ success: true })
+    // 0. POST /v1/users/logout
+    http.post('/v1/users/logout', () => {
+        return HttpResponse.json(
+            { success: true },
+            {
+                headers: {
+                    'Set-Cookie': 'refreshToken=; Path=/; Max-Age=0',
+                },
+            },
+        )
     }),
 
     // 2. GET /api/rooms

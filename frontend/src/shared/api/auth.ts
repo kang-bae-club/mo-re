@@ -16,25 +16,30 @@ export interface AuthSessionResponse {
 export const authApi = {
     getUserSession: async (): Promise<AuthSessionResponse | null> => {
         try {
-            const response = await httpClient.get<AuthSessionResponse>('/api/me')
+            const response = await httpClient.get<AuthSessionResponse>('/v1/users/me')
             return response.data
         } catch (error) {
             console.error('Auth API Error:', error)
             return null
         }
     },
-    // TODO: 로그인 후 세션 및 유저 정보 저장
-    login: async (username?: string, password?: string): Promise<boolean> => {
+    login: async (username?: string, password?: string): Promise<string | null> => {
         try {
-            const response = await httpClient.post('/api/login', { username, password })
-            return response.status === 200
+            const response = await httpClient.post<{
+                accessToken: string
+            }>('/v1/users/login', { username, password })
+
+            if (response.status === 200 && response.data.accessToken) {
+                return response.data.accessToken
+            }
+            return null
         } catch {
-            return false
+            return null
         }
     },
     logout: async (): Promise<boolean> => {
         try {
-            const response = await httpClient.post('/api/logout')
+            const response = await httpClient.post('/v1/users/logout')
             return response.status === 200
         } catch {
             return false
